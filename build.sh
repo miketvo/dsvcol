@@ -1,10 +1,11 @@
 #!/bin/bash
 #
-# Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ] [-c]
+# Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ] [-c] [-h]
 # Options:
 #   -d Specify the project's root directory. Use './' if you're already in the project's root.
 #   -m Specify build mode. Accepted values are 'debug' and 'release'
 #   -c (Optional) Clean built files.  Use in conjunction with '-m'
+#   -h (Optional) Display help and exit.
 #
 
 while getopts d:m:hc flag; do
@@ -17,6 +18,7 @@ while getopts d:m:hc flag; do
     echo "  -d Specify the project's root directory. Use './' if you're already in the project's root."
     echo "  -m Specify build mode. Accepted values are 'debug' and 'release'"
     echo "  -c (Optional) Clean built files. Use in conjunction with '-m'"
+    echo "  -h (Optional) Display this help and exit."
     exit 0
     ;;
   c) clean=1 ;;
