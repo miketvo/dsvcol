@@ -2,17 +2,32 @@
 
 # Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ]
 
-while getopts d:m: flag
+while getopts d:m:h flag
 do
   case "$flag" in
     d) directory=${OPTARG};;
     m) mode=${OPTARG};;
+    h)
+      echo "Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ]"
+      ;;
     *)
       echo "Invalid flag '$flag'"
       exit 1
       ;;
   esac
 done
+
+if [ "" = "${directory}" ];
+then
+  echo "Error: No directory provided. Try 'build.sh -h' for more information."
+  exit 1
+fi
+
+if [ "" = "${mode}" ];
+then
+  echo "Error: No build mode specified. Try 'build.sh -h' for more information."
+  exit 1
+fi
 
 if [ ! -d "${directory}" ];
 then
