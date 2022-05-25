@@ -9,6 +9,7 @@ do
     m) mode=${OPTARG};;
     h)
       echo "Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ]"
+      exit 0
       ;;
     *)
       echo "Invalid flag '$flag'"
