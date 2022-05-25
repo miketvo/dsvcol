@@ -25,8 +25,7 @@ if ($h.IsPresent) {
 }
 
 if (Test-Path -Path $d) {
-    switch ($m)
-    {
+    switch ($m) {
         "debug" {
             if ($c.IsPresent) {
                 Write-Output "[ Clean | Debug ]"
