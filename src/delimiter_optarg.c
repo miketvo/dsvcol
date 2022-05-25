@@ -20,10 +20,12 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
                 switch (*(c + 1)) {
                     case ESC_TAB:
                         buffer[i] = '\t';
+                        c++;
                         n--;
                         break;
                     case ESC_BKSLASH:
                         buffer[i] = '\\';
+                        c++;
                         n--;
                         break;
                     default:
