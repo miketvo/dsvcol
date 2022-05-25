@@ -37,8 +37,16 @@ then
 fi
 
 case "$mode" in
-  "debug") cmake --build ./cmake-build-debug --target dsvcol -j 9;;
-  "release") cmake --build ./cmake-build-release --target dsvcol -j 9;;
+  "debug")
+    echo "cmake --build ./cmake-build-debug --target dsvcol -j 9"
+    cmake --build ./cmake-build-debug --target dsvcol -j 9
+    echo "[Build finished]"
+    ;;
+  "release")
+    echo "cmake --build ./cmake-build-release --target dsvcol -j 9"
+    cmake --build ./cmake-build-release --target dsvcol -j 9
+    echo "[Build finished]"
+    ;;
   *)
     echo "Invalid build mode '$mode'"
     exit 1
