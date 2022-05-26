@@ -28,6 +28,8 @@ add_test(main.test.f.opt.goodoptarg2 dsvcol -f tsv)
 add_test(main.test.d.opt.goodoptarg dsvcol -d \;)
 
 # Black box tests (negative)
+add_test(main.test.badopt dsvcol -k)
+set_property(TEST main.test.badopt PROPERTY WILL_FAIL true)
 add_test(main.test.f.opt.nooptarg dsvcol -f)
 set_property(TEST main.test.f.opt.nooptarg PROPERTY WILL_FAIL true)
 add_test(main.test.f.opt.badoptarg dsvcol -f dsv)
