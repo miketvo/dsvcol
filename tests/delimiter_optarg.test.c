@@ -33,23 +33,27 @@ int main() {
             "abc",
             "ab",
             "ab",
+            "ab",
             "a",
             ""  // This signals the end of the array. DO NOT REMOVE.
     };
 
+    int return_val = 0;
     char *buffer;
     size_t i = 0;
     while (strcmp(TEST_CASES[i], "") != 0) {  // Test for the end of the array
         buffer = calloc(TEST_SIZES[i] + 1, sizeof(char));
         delimiter_optarg_nparse(TEST_CASES[i], buffer, TEST_SIZES[i] + 1);
         if (strncmp(buffer, TEST_ASSERTS[i], TEST_SIZES[i]) != 0) {
-            fprintf(stderr, "ERROR: index: %d - buffer(%s) != assertion(%s)\n", i, buffer, TEST_ASSERTS[i]);
+            fprintf(stderr, "ERROR: index( %d ) : buffer( '%s' ) != assertion( '%s' )\n", i, buffer, TEST_ASSERTS[i]);
             free(buffer);
-            return 1;
+            buffer = NULL;
+            if (return_val != 1) return_val = 1;
         }
         free(buffer);
+        buffer = NULL;
         i++;
     }
 
-    return 0;
+    return return_val;
 }
