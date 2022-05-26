@@ -110,14 +110,11 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    char *delimiters = (char*) calloc(strlen(raw_delimiters), sizeof(char));
+    // Generate delimiter string
+    char *delimiters = calloc(strlen(raw_delimiters), sizeof(char));
     for (size_t i = 0; i < strlen(raw_delimiters); i++) delimiters[i] = '\0';
-    if (raw_delimiters) {
-        printf("'%s'\n", raw_delimiters);
-        delimiter_optarg_nparse(raw_delimiters, delimiters, strlen(raw_delimiters));
-    }
-    printf("'%s'", delimiters);
-    free(delimiters);
+    delimiter_optarg_nparse(raw_delimiters, delimiters, strlen(raw_delimiters));
 
+    free(delimiters);
     return EXIT_SUCCESS;
 }
