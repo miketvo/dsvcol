@@ -8,44 +8,35 @@
 
 
 int main() {
-    const char *TEST_CASES[] = {
-            "abc",
-            "abcc",
-            "abbc",
-            "aabb",
-            "aaab",
-            "aaaa",
-            ""  // This signals the end of the array. DO NOT REMOVE.
+    struct testcase {
+        const char *input;
+        size_t size;
+        const char *assertion;
     };
 
-    const size_t TEST_SIZES[] = {  // Not including terminating character '\0'
-            3,
-            4,
-            4,
-            4,
-            4,
-            4,
-            0  // This signals the end of the array. DO NOT REMOVE.
-    };
-
-    const char *TEST_ASSERTS[] = {
-            "abc",
-            "abc",
-            "ab",
-            "ab",
-            "ab",
-            "a",
-            ""  // This signals the end of the array. DO NOT REMOVE.
+    const struct testcase TEST[] = {
+            {"abc",      3, "abc"},
+            {"abcc",     4, "abc"},
+            {"abbc",     4, "abc"},
+            {"aabb",     4, "ab"},
+            {"aaab",     4, "ab"},
+            {"aaaa",     4, "a"},
+            {"a\\\\\\t", 5, "a\\\t"},
+            {NULL,       0, NULL},  // This is to signal the end of the array. DO NOT REMOVE.
     };
 
     int return_val = 0;
     char *buffer;
     size_t i = 0;
-    while (strcmp(TEST_CASES[i], "") != 0) {  // Test for the end of the array
-        buffer = calloc(TEST_SIZES[i] + 1, sizeof(char));
-        delimiter_optarg_nparse(TEST_CASES[i], buffer, TEST_SIZES[i] + 1);
-        if (strncmp(buffer, TEST_ASSERTS[i], TEST_SIZES[i]) != 0) {
-            fprintf(stderr, "ERROR: index( %d ) : buffer( '%s' ) != assertion( '%s' )\n", i, buffer, TEST_ASSERTS[i]);
+    while (TEST[i].input != NULL) {  // Test for the end of the array
+        buffer = calloc(TEST[i].size + 1, sizeof(char));
+        delimiter_optarg_nparse(TEST[i].input, buffer, TEST[i].size + 1);
+        if (strncmp(buffer, TEST[i].assertion, TEST[i].size) != 0) {
+            fprintf(
+                    stderr,
+                    "ERROR: [ index( %d ), input( %s ), size( %d ) ]: buffer( '%s' ) != assertion( '%s' )\n",
+                    i, TEST[i].input, TEST[i].size, buffer, TEST[i].assertion
+            );
             free(buffer);
             buffer = NULL;
             if (return_val != 1) return_val = 1;
