@@ -11,8 +11,10 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-# IntelliJ Clion
+# Build folders
 /cmake-build-debug/
 /cmake-build-release/
+
+# IntelliJ Clion
 /.idea/
 

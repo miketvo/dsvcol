@@ -13,3 +13,4 @@ add_executable(dsvcol
 enable_testing()
 add_subdirectory(tests)
 add_test(ischrin.test tests/ischrin.test)
+add_test(delimiter_optarg.test tests/delimiter_optarg.test)
