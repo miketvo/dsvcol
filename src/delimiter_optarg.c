@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../include/glob.h"
+#include "../include/util.h"
 #include "../include/delimiter_optarg.h"
 
 
@@ -19,12 +20,16 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
             case ESC_BKSLASH:
                 switch (*(c + 1)) {
                     case ESC_TAB:
-                        buffer[i] = '\t';
+                        if (!ischrin('\t', buffer, i)) {
+                            buffer[i] = '\t';
+                        }
                         c++;
                         n--;
                         break;
                     case ESC_BKSLASH:
-                        buffer[i] = '\\';
+                        if (!ischrin('\\', buffer, i)) {
+                            buffer[i] = '\\';
+                        }
                         c++;
                         n--;
                         break;
@@ -34,7 +39,9 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
                 }
                 break;
             default:
-                buffer[i] = *c;
+                if (!ischrin(*c, buffer, i)) {
+                    buffer[i] = *c;
+                }
                 break;
         }
         c++;

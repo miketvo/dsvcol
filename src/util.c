@@ -21,3 +21,11 @@ void print_bad_usage() {
 void print_optarg_error(const char *optarg) {
     fprintf(stderr, "%s: unknown argument '%s'\n", APP_NAME, optarg);
 }
+
+
+bool ischrin(const char el, const char *array, size_t nel) {
+    for (size_t i = 0; i < nel; i++) {
+        if (el == array[i]) return true;
+    }
+    return false;
+}

@@ -9,3 +9,7 @@ add_executable(dsvcol
         src/util.c include/util.h
         src/delimiter_optarg.c include/delimiter_optarg.h
         )
+
+enable_testing()
+add_subdirectory(tests)
+add_test(ischrin.test tests/ischrin.test)
