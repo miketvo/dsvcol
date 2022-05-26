@@ -12,7 +12,7 @@
 void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
     const char *c = str;
     size_t i = 0;
-    while (*c && i < n) {
+    while (*c && i < n - 1) {
         switch (*c) {
             case '"':
                 fprintf(stderr, "%s: invalid delimiter: %c", APP_NAME, *c);
@@ -22,6 +22,7 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
                     case ESC_TAB:
                         if (!ischrin('\t', buffer, i)) {
                             buffer[i] = '\t';
+                            i++;
                         }
                         c++;
                         n--;
@@ -29,6 +30,7 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
                     case ESC_BKSLASH:
                         if (!ischrin('\\', buffer, i)) {
                             buffer[i] = '\\';
+                            i++;
                         }
                         c++;
                         n--;
@@ -41,10 +43,10 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
             default:
                 if (!ischrin(*c, buffer, i)) {
                     buffer[i] = *c;
+                    i++;
                 }
                 break;
         }
         c++;
-        i++;
     }
 };
