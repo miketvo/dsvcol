@@ -34,7 +34,7 @@ int main() {
         if (strncmp(buffer, TEST[i].assertion, TEST[i].size) != 0) {
             fprintf(
                     stderr,
-                    "ERROR: [ index( %d ), input( %s ), size( %d ) ]: buffer( '%s' ) != assertion( '%s' )\n",
+                    "ERROR: [ index( %d ), input( '%s' ), size( %d ) ]: buffer( '%s' ) != assertion( '%s' )\n",
                     i, TEST[i].input, TEST[i].size, buffer, TEST[i].assertion
             );
             free(buffer);
