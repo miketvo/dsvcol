@@ -30,7 +30,7 @@ int main() {
     size_t i = 0;
     while (TEST[i].input != NULL) {  // Test for the end of the array
         buffer = calloc(TEST[i].size + 1, sizeof(char));
-        delimiter_optarg_nparse(TEST[i].input, buffer, TEST[i].size + 1);
+        delimiter_optarg_nparse(TEST[i].input, buffer, TEST[i].size);
         if (strncmp(buffer, TEST[i].assertion, TEST[i].size) != 0) {
             fprintf(
                     stderr,
