@@ -22,6 +22,10 @@ void print_optarg_error(const char *optarg) {
     fprintf(stderr, "%s: unknown argument '%s'\n", APP_NAME, optarg);
 }
 
+void print_file_not_found(const char *filename) {
+    fprintf(stderr, "%s: \033[0;31mfatal error:\033[0m file not found: '%s'\n", APP_NAME, filename);
+}
+
 
 bool ischrin(const char el, const char *array, size_t nel) {
     for (size_t i = 0; i < nel; i++) {

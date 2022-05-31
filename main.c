@@ -51,6 +51,9 @@ bool is_both_fd(struct opt_bit_field x) {
 }
 
 int main(int argc, char *argv[]) {
+    /*
+     * Arguments processing
+     */
     int opt;
     const char *raw_delimiters = ",";  // Default delimiter is the comma ',' (.csv)
     while (1) {
@@ -110,10 +113,41 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
+    // Detect stdin mode
+    if (optind == argc) {
+        opt_flags._field |= 1 << 5;
+    }
+    /* End of arguments processing */
+
+
     // Generate delimiter string
     char *delimiters = calloc(strlen(raw_delimiters), sizeof(char));
     for (size_t i = 0; i < strlen(raw_delimiters); i++) delimiters[i] = '\0';
     delimiter_optarg_nparse(raw_delimiters, delimiters, strlen(raw_delimiters));
+
+
+    /*
+     * Main dsv processor
+     */
+    if ((opt_flags._field & (1 << 5)) >> 5) {  // stdin mode
+        // TODO: Implement this
+    } else {  // File input mode
+        #pragma clang diagnostic push
+        #pragma ide diagnostic ignored "LoopDoesntUseConditionVariableInspection"
+        while (optind < argc) {
+            FILE *file = fopen(argv[optind], "r");
+            if (file == NULL) {
+                print_file_not_found(argv[optind]);
+                fclose(file);
+                exit(EXIT_FAILURE);
+            }
+            fclose(file);
+            optind++;
+        }
+        #pragma clang diagnostic pop
+    }
+    /* End of main dsv processor */
+
 
     free(delimiters);
     return EXIT_SUCCESS;
