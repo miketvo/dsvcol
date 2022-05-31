@@ -130,8 +130,11 @@ int main(int argc, char *argv[]) {
      * Main dsv processor
      */
     if ((opt_flags._field & (1 << 5)) >> 5) {  // stdin mode
+
         // TODO: Implement this
+
     } else {  // File input mode
+
         #pragma clang diagnostic push
         #pragma ide diagnostic ignored "LoopDoesntUseConditionVariableInspection"
         while (optind < argc) {
@@ -145,6 +148,7 @@ int main(int argc, char *argv[]) {
             optind++;
         }
         #pragma clang diagnostic pop
+
     }
     /* End of main dsv processor */
 
