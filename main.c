@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "include/util.h"
+#include "include/io.h"
 #include "include/delimiter_optarg.h"
 
 
@@ -144,6 +145,14 @@ int main(int argc, char *argv[]) {
                 fclose(file);
                 exit(EXIT_FAILURE);
             }
+
+            char *line = NULL;
+            size_t buffer_len = 0;
+            ssize_t line_len;
+            while ((line_len = getline(&line, &buffer_len, file)) != -1) {
+                // TODO: Implement this
+            }
+            free(line);
             fclose(file);
             optind++;
         }
