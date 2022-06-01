@@ -8,13 +8,12 @@
 
 // TODO: Unoptimized implementation. Finish this.
 ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stream) {
-    if (lineptr == NULL || n == NULL)
-    {
+    if (lineptr == NULL || n == NULL) {
         errno = EINVAL;
         return -1;
     }
 
-    if (ferror (stream)) {
+    if (ferror(stream)) {
         return -1;
     }
 
@@ -38,5 +37,5 @@ ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stre
     buffer[len] = '\0';
 
     *lineptr = buffer;
-    return((ssize_t) len);
+    return ((ssize_t) len);
 }
