@@ -23,7 +23,7 @@ void print_optarg_error(const char *optarg) {
 }
 
 void print_file_not_found(const char *filename, const char *message) {
-    fprintf(stderr, "%s: \033[0;31m%s:\033[0m '%s'\n", APP_NAME, message, filename);
+    fprintf(stderr, "%s: \033[1;31m%s:\033[0m '%s'\n", APP_NAME, message, filename);
 }
 
 

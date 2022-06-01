@@ -25,14 +25,20 @@ int main() {
     size_t buffer_len = 0;
     ssize_t line_len;
     tempf = fopen("io.getline.test.data.temp.txt", "r");
-    do {
-        line_len = getline(&line, &buffer_len, tempf);
+    while ((line_len = getline(&line, &buffer_len, tempf)) != -1) {
         total_len += line_len;
         all_lines = realloc(all_lines, total_len * sizeof(char));
-    } while (line_len != -1);
+        strncat(all_lines, line, line_len);
+    }
+    all_lines[total_len - 1] = '\0';
     free(line);
     fclose(tempf);
     remove("io.getline.test.data.temp.txt");  // Remove temporary test file on disk
+
+    if (strcmp(all_lines, TEST_DATA) != 0) {
+        fprintf(stderr, "Assertion failed: Expected equality between:\nchar *all_lines'''\n%s\n'''\nand\nconst char *TEST_DATA'''\n%s\n'''\n", all_lines, TEST_DATA);
+        return 1;
+    }
 
     return 0;
 }
