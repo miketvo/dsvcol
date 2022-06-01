@@ -151,6 +151,7 @@ int main(int argc, char *argv[]) {
             ssize_t line_len;
             while ((line_len = getline(&line, &buffer_len, file)) != -1) {
                 // TODO: Implement this
+                printf("%s", line);
             }
             free(line);
             fclose(file);
