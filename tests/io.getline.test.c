@@ -7,7 +7,7 @@
 #include "../include/getline.h"
 
 
-int main() {
+int full_test() {
     // Create test data and write into file on disk
     const char *TEST_DATA = "This is the test data.\nIt consists of 2 lines - this one and the one before it.";
     FILE *tempf = fopen("io.getline.test.data.temp.txt", "w+");
@@ -41,5 +41,12 @@ int main() {
     }
 
     free(all_lines);
+    return 0;
+}
+
+
+int main() {
+    if (full_test()) return 1;
+
     return 0;
 }
