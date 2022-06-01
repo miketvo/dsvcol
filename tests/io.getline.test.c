@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../include/io.h"
+#include "../include/getline.h"
 
 
 int main() {

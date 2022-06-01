@@ -10,5 +10,5 @@ add_executable(delimiter_optarg.test
 
 add_executable(io.getline.test
         io.getline.test.c
-        ../src/io.c ../include/io.h
+        ../src/getline.c ../include/getline.h
         )

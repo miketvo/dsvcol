@@ -9,6 +9,7 @@ add_executable(dsvcol
         src/util.c include/util.h
         src/delimiter_optarg.c include/delimiter_optarg.h
         src/io.c include/io.h
+        src/getline.c include/getline.h
         )
 
 
