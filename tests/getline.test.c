@@ -10,9 +10,9 @@
 int full_test() {
     // Create test data and write into file on disk
     const char *TEST_DATA = "This is the test data.\nIt consists of 2 lines - this one and the one before it.";
-    FILE *tempf = fopen("io.getline.test.data.temp.txt", "w+");
+    FILE *tempf = fopen("getline.test.data.temp.txt", "w+");
     if (tempf == NULL) {
-        fprintf(stderr, "io.getline.test: failed to create test data file.\n");
+        fprintf(stderr, "getline.test: %s.\n", strerror(errno));
         return 1;
     }
     fprintf(tempf, "%s", TEST_DATA);
@@ -24,7 +24,7 @@ int full_test() {
     char *line = NULL;
     size_t buffer_len = 0;
     ssize_t line_len;
-    tempf = fopen("io.getline.test.data.temp.txt", "r");
+    tempf = fopen("getline.test.data.temp.txt", "r");
     while ((line_len = getline(&line, &buffer_len, tempf)) != -1) {
         total_len += line_len;
         all_lines = realloc(all_lines, total_len * sizeof(char));
@@ -32,7 +32,7 @@ int full_test() {
     }
     free(line);
     fclose(tempf);
-    remove("io.getline.test.data.temp.txt");  // Remove temporary test file on disk
+    remove("getline.test.data.temp.txt");  // Remove temporary test file on disk
 
     if (strcmp(all_lines, TEST_DATA) != 0) {
         fprintf(stderr, "Assertion failed: Expected equality between:\nchar *all_lines'''\n%s\n'''\nand\nconst char *TEST_DATA'''\n%s\n'''\n", all_lines, TEST_DATA);
