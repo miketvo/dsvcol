@@ -20,7 +20,7 @@ int main() {
 
     // Read test data from file just created on disk
     char *all_lines = calloc(1, sizeof(char));
-    size_t total_len = 1;  // Including terminating null character '\0'
+    size_t total_len = 0;
     char *line = NULL;
     size_t buffer_len = 0;
     ssize_t line_len;
@@ -30,7 +30,6 @@ int main() {
         all_lines = realloc(all_lines, total_len * sizeof(char));
         strncat(all_lines, line, line_len);
     }
-    all_lines[total_len - 1] = '\0';
     free(line);
     fclose(tempf);
     remove("io.getline.test.data.temp.txt");  // Remove temporary test file on disk

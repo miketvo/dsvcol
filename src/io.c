@@ -25,13 +25,14 @@ ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stre
     size_t len = 0;
     while (1) {
         c = (char) fgetc(stream);
+        if (c == EOF) break;
         buffer[len] = c;
         len++;
         if (len > *n) {
             buffer = realloc(buffer, (len + 1) * sizeof(char));
             *n = len;
         }
-        if (c == '\n' || c == EOF) break;
+        if (c == '\n') break;
     };
     buffer[len] = '\0';
 
