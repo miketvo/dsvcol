@@ -6,6 +6,7 @@
 #include "../include/io.h"
 
 
+// TODO: Incomplete implementation. Finish this.
 ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stream) {
     if (lineptr == NULL || n == NULL)
     {
