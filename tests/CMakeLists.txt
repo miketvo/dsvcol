@@ -7,3 +7,8 @@ add_executable(delimiter_optarg.test
         ../src/delimiter_optarg.c ../include/delimiter_optarg.h
         ../src/util.c ../include/util.h
         )
+
+add_executable(io.getline.test
+        io.getline.test.c
+        ../src/io.c ../include/io.h
+        )

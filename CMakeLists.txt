@@ -21,6 +21,7 @@ add_subdirectory(tests)
 # Unit tests
 add_test(ischrin.test tests/ischrin.test)
 add_test(delimiter_optarg.test tests/delimiter_optarg.test)
+add_test(io.getline.test tests/io.getline.test)
 
 # Black box tests
 add_test(main.test.noopts dsvcol)
