@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
         while (optind < argc) {
             FILE *file = fopen(argv[optind], "r");
             if (file == NULL) {
-                print_file_not_found(argv[optind]);
+                print_file_not_found(argv[optind], strerror(errno));
                 fclose(file);
                 exit(EXIT_FAILURE);
             }

@@ -12,7 +12,7 @@ void print_help();
 void print_version();
 void print_bad_usage();
 void print_optarg_error(const char *optarg);
-void print_file_not_found(const char *filename);
+void print_file_not_found(const char *filename, const char *message);
 
 
 bool ischrin(char el, const char *array, size_t nel);
