@@ -130,9 +130,16 @@ int main(int argc, char *argv[]) {
     /*
      * Main dsv processor
      */
+    char *line = NULL;
+    size_t buffer_len = 0;
+    ssize_t line_len;
     if ((opt_flags._field & (1 << 5)) >> 5) {  // stdin mode
 
-        // TODO: Implement this
+        while ((line_len = getline(&line, &buffer_len, stdin)) != -1) {
+            // TODO: Implement this
+            printf("%s", line);
+        }
+        free(line);
 
     } else {  // File input mode
 
@@ -146,9 +153,6 @@ int main(int argc, char *argv[]) {
                 exit(EXIT_FAILURE);
             }
 
-            char *line = NULL;
-            size_t buffer_len = 0;
-            ssize_t line_len;
             while ((line_len = getline(&line, &buffer_len, file)) != -1) {
                 // TODO: Implement this
                 printf("%s", line);
