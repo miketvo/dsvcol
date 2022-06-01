@@ -6,7 +6,7 @@
 #include "../include/io.h"
 
 
-// TODO: Incomplete implementation. Finish this.
+// TODO: Unoptimized implementation. Finish this.
 ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stream) {
     if (lineptr == NULL || n == NULL)
     {
@@ -22,20 +22,20 @@ ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stre
         return -1;
     }
 
-    char *buffer = calloc(*n, sizeof(char));
+    char *buffer = calloc(*n + 1, sizeof(char));
     char c;
     size_t len = 0;
     while (1) {
         c = (char) fgetc(stream);
         buffer[len] = c;
         len++;
-        if (len + 1 > *n) {
-            buffer = realloc(buffer, len + 1 * sizeof(char));
+        if (len > *n) {
+            buffer = realloc(buffer, (len + 1) * sizeof(char));
             *n = len;
         }
         if (c == '\n' || c == EOF) break;
     };
-    buffer[len + 1] = '\0';
+    buffer[len] = '\0';
 
     *lineptr = buffer;
     return((ssize_t) len);
