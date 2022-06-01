@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 
 
     // Generate delimiter string
-    char *delimiters = calloc(strlen(raw_delimiters), sizeof(char));
+    char *delimiters = calloc(strlen(raw_delimiters) + 1, sizeof(char));
     for (size_t i = 0; i < strlen(raw_delimiters); i++) delimiters[i] = '\0';
     delimiter_optarg_nparse(raw_delimiters, delimiters, strlen(raw_delimiters));
 
