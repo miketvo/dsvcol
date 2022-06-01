@@ -36,8 +36,10 @@ int main() {
 
     if (strcmp(all_lines, TEST_DATA) != 0) {
         fprintf(stderr, "Assertion failed: Expected equality between:\nchar *all_lines'''\n%s\n'''\nand\nconst char *TEST_DATA'''\n%s\n'''\n", all_lines, TEST_DATA);
+        free(all_lines);
         return 1;
     }
 
+    free(all_lines);
     return 0;
 }

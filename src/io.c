@@ -29,7 +29,14 @@ ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stre
         buffer[len] = c;
         len++;
         if (len > *n) {
-            buffer = realloc(buffer, (len + 1) * sizeof(char));
+            char *temp_buffer;
+            temp_buffer = realloc(buffer, (len + 1) * sizeof(char));
+            if (temp_buffer == NULL) {
+                free(buffer);
+                errno = ENOMEM;
+                return -1;
+            }
+            buffer = temp_buffer;
             *n = len;
         }
         if (c == '\n') break;
