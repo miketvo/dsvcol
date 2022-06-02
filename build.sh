@@ -8,6 +8,7 @@
 #   -h (Optional) Display help and exit.
 #
 
+clean=0
 while getopts d:m:hc flag; do
   case "$flag" in
   d) directory=${OPTARG} ;;
@@ -46,7 +47,7 @@ fi
 
 case "$mode" in
 "debug")
-  if [ ${clean} -eq 1 ]; then
+  if [ "${clean}" -eq 1 ]; then
     echo "[ Clean | Debug ]"
     echo "cmake --build ./cmake-build-debug --target clean -j 9"
     cmake --build ./cmake-build-debug --target dsvcol -j 9
@@ -59,7 +60,7 @@ case "$mode" in
   fi
   ;;
 "debug-tests")
-  if [ ${clean} -eq 1 ]; then
+  if [ $clean -eq 1 ]; then
     echo "[ Clean | Debug ]"
     echo "cmake --build ./cmake-build-debug --target clean -j 9"
     cmake --build ./cmake-build-debug --target dsvcol -j 9
@@ -72,7 +73,7 @@ case "$mode" in
   fi
   ;;
 "release")
-  if [ ${clean} -eq 1 ]; then
+  if [ $clean -eq 1 ]; then
     echo "[ Clean | Release ]"
     echo "cmake --build ./cmake-build-release --target clean -j 9"
     cmake --build ./cmake-build-release --target dsvcol -j 9
@@ -85,7 +86,7 @@ case "$mode" in
   fi
   ;;
 "release-tests")
-  if [ ${clean} -eq 1 ]; then
+  if [ $clean -eq 1 ]; then
     echo "[ Clean | Release ]"
     echo "cmake --build ./cmake-build-release --target clean -j 9"
     cmake --build ./cmake-build-release --target dsvcol -j 9
