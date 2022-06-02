@@ -35,7 +35,7 @@ int main() {
             fprintf(
                     stderr,
                     "ERROR: [ index( %d ), input( '%s' ), size( %u ) ]: buffer( '%s' ) != assertion( '%s' )\n",
-                    i, TEST[i].input, (unsigned int) TEST[i].size, buffer, TEST[i].assertion
+                    (unsigned int) i, TEST[i].input, (unsigned int) TEST[i].size, buffer, TEST[i].assertion
             );
             free(buffer);
             buffer = NULL;
