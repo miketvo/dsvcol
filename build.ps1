@@ -6,7 +6,7 @@
 #   -h (Optional) Display help and exit.
 #
 
-param(
+[CmdletBinding()] param(
     [string]$m,
     [switch]$c,
     [switch]$h

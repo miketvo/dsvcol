@@ -21,6 +21,7 @@ while getopts m:hc flag; do
     ;;
   c) clean=1 ;;
   *)
+    echo "Try 'build.sh -h' for more information."
     exit 1
     ;;
   esac
