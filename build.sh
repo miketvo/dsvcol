@@ -3,7 +3,7 @@
 # Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ] [-c] [-h]
 # Options:
 #   -d Specify the project's root directory. Use './' if you're already in the project's root.
-#   -m Specify build mode. Accepted values are 'debug', 'debug-tests', 'release', and 'release-tests'
+#   -m Specify build mode. Accepted values are 'debug', 'debug-test', 'release', and 'release-test'
 #   -c (Optional) Clean built files.  Use in conjunction with '-m'
 #   -h (Optional) Display help and exit.
 #

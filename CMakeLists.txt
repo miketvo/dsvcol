@@ -17,20 +17,20 @@ add_executable(dsvcol
 # TESTS                                  #
 ##########################################
 enable_testing()
-add_subdirectory(tests)
+add_subdirectory(test)
 
-# Unit tests
-add_test(ischrin.test tests/ischrin.test)
-add_test(delimiter_optarg.test tests/delimiter_optarg.test)
-add_test(getline.test tests/getline.test)
+# Unit test
+add_test(ischrin.test test/ischrin.test)
+add_test(delimiter_optarg.test test/delimiter_optarg.test)
+add_test(getline.test test/getline.test)
 
-# Black box tests
+# Black box test
 add_test(main.test.noopts dsvcol)
 add_test(main.test.f.opt.goodoptarg1 dsvcol -f csv)
 add_test(main.test.f.opt.goodoptarg2 dsvcol -f tsv)
 add_test(main.test.d.opt.goodoptarg dsvcol -d \;)
 
-# Black box tests (negative)
+# Black box test (negative)
 add_test(main.test.badopt dsvcol -k)
 set_property(TEST main.test.badopt PROPERTY WILL_FAIL true)
 add_test(main.test.f.opt.nooptarg dsvcol -f)
