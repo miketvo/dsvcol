@@ -23,7 +23,7 @@ if ($h.IsPresent) {
 
 switch ($m) {
     "" {
-        Write-Error "Error: No build mode specified. Try 'build.sh -h' for more information."
+        Write-Host "Error: No build mode specified. Try 'build.sh -h' for more information." -ForegroundColor Red
         exit 1
     }
     "debug" {
@@ -91,7 +91,7 @@ switch ($m) {
         }
     }
     Default {
-        Write-Error "Invalid build mode '$m'"
+        Write-Host "Invalid build mode '$m'" -ForegroundColor Red
         exit 1
     }
 }
