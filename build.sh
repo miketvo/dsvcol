@@ -38,7 +38,7 @@ case "$mode" in
   if [ "${clean}" -eq 1 ]; then
     echo "[ Clean | Debug ]"
     echo "cmake --build ./cmake-build-debug --target clean -j 9"
-    cmake --build ./cmake-build-debug --target dsvcol -j 9
+    cmake --build ./cmake-build-debug --target clean -j 9
     echo "[ Clean finished ]"
   else
     echo "[ Build | Debug ]"
@@ -51,12 +51,12 @@ case "$mode" in
   if [ $clean -eq 1 ]; then
     echo "[ Clean | Debug ]"
     echo "cmake --build ./cmake-build-debug --target clean -j 9"
-    cmake --build ./cmake-build-debug --target dsvcol -j 9
+    cmake --build ./cmake-build-debug --target clean -j 9
     echo "[ Clean finished ]"
   else
     echo "[ Build | Debug ]"
     echo "cmake --build ./cmake-build-debug --target all-tests -j 9"
-    cmake --build ./cmake-build-debug --target dsvcol -j 9
+    cmake --build ./cmake-build-debug --target all-tests -j 9
     echo "[ Build finished ]"
   fi
   ;;
@@ -64,7 +64,7 @@ case "$mode" in
   if [ $clean -eq 1 ]; then
     echo "[ Clean | Release ]"
     echo "cmake --build ./cmake-build-release --target clean -j 9"
-    cmake --build ./cmake-build-release --target dsvcol -j 9
+    cmake --build ./cmake-build-release --target clean -j 9
     echo "[ Clean finished ]"
   else
     echo "[ Build | Release ]"
@@ -77,12 +77,12 @@ case "$mode" in
   if [ $clean -eq 1 ]; then
     echo "[ Clean | Release ]"
     echo "cmake --build ./cmake-build-release --target clean -j 9"
-    cmake --build ./cmake-build-release --target dsvcol -j 9
+    cmake --build ./cmake-build-release --target clean -j 9
     echo "[ Clean finished ]"
   else
     echo "[ Build | Release ]"
     echo "cmake --build ./cmake-build-release --target all-tests -j 9"
-    cmake --build ./cmake-build-release --target dsvcol -j 9
+    cmake --build ./cmake-build-release --target all-tests -j 9
     echo "[ Build finished ]"
   fi
   ;;
