@@ -5,6 +5,9 @@ add_dependencies(all-tests
         getline.test
         dsvcol
         )
+add_custom_command(TARGET all-tests PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/test/data/ ${CMAKE_BINARY_DIR}/test/data/)
 
 
 add_executable(ischrin.test EXCLUDE_FROM_ALL
