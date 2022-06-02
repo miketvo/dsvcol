@@ -1,3 +1,12 @@
+add_custom_target(all-tests)
+add_dependencies(all-tests
+        ischrin.test
+        delimiter_optarg.test
+        getline.test
+        dsvcol
+        )
+
+
 add_executable(ischrin.test EXCLUDE_FROM_ALL
         ischrin.test.c ../src/util.c ../include/util.h
         )
