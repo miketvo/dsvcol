@@ -22,6 +22,10 @@ if ($h.IsPresent) {
 }
 
 switch ($m) {
+    "" {
+        Write-Error "Error: No build mode specified. Try 'build.sh -h' for more information."
+        exit 1
+    }
     "debug" {
         if ($c.IsPresent)
         {
@@ -87,10 +91,6 @@ switch ($m) {
         }
     }
     Default {
-        if ($m -eq "") {
-            Write-Error "Error: No build mode specified. Try 'build.sh -h' for more information."
-            exit 1
-        }
         Write-Error "Invalid build mode '$m'"
         exit 1
     }
