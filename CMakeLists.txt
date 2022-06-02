@@ -18,7 +18,8 @@ add_executable(dsvcol
 ##########################################
 enable_testing()
 add_subdirectory(test)
-add_custom_target(all-tests DEPENDS
+add_custom_target(all-tests)
+add_dependencies(all-tests
         ischrin.test
         delimiter_optarg.test
         getline.test
