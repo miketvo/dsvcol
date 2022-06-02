@@ -55,7 +55,7 @@ case "$mode" in
     echo "[ Clean finished ]"
   else
     echo "[ Build | Debug ]"
-    echo "cmake --build ./cmake-build-debug --target build-tests -j 9"
+    echo "cmake --build ./cmake-build-debug --target all-tests -j 9"
     cmake --build ./cmake-build-debug --target dsvcol -j 9
     echo "[ Build finished ]"
   fi
@@ -81,7 +81,7 @@ case "$mode" in
     echo "[ Clean finished ]"
   else
     echo "[ Build | Release ]"
-    echo "cmake --build ./cmake-build-release --target build-tests -j 9"
+    echo "cmake --build ./cmake-build-release --target all-tests -j 9"
     cmake --build ./cmake-build-release --target dsvcol -j 9
     echo "[ Build finished ]"
   fi
