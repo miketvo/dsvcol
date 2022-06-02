@@ -18,6 +18,13 @@ add_executable(dsvcol
 ##########################################
 enable_testing()
 add_subdirectory(test)
+add_custom_target(build-tests DEPENDS
+        ischrin.test
+        delimiter_optarg.test
+        getline.test
+        dsvcol
+        )
+
 
 # Unit test
 add_test(ischrin.test test/ischrin.test)
@@ -28,7 +35,7 @@ add_test(getline.test test/getline.test)
 add_test(main.test.noopts dsvcol)
 add_test(main.test.f.opt.goodoptarg1 dsvcol -f csv)
 add_test(main.test.f.opt.goodoptarg2 dsvcol -f tsv)
-add_test(main.test.d.opt.goodoptarg dsvcol -d \;)
+add_test(main.test.d.opt.goodoptarg3 dsvcol -d \;)
 
 # Black box test (negative)
 add_test(main.test.badopt dsvcol -k)
