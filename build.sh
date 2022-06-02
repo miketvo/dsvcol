@@ -21,7 +21,6 @@ while getopts m:hc flag; do
     ;;
   c) clean=1 ;;
   *)
-    echo "Invalid flag '$flag'"
     exit 1
     ;;
   esac
