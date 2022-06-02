@@ -21,66 +21,77 @@ if ($h.IsPresent) {
     exit 0
 }
 
-if ($m.IsPresent) {
-    switch ($m) {
-        "debug" {
-            if ($c.IsPresent) {
-                Write-Output "[ Clean | Debug ]"
-                Write-Output "cmake --build ./cmake-build-debug --target clean -j 9"
-                cmake --build ./cmake-build-debug --target dsvcol -j 9
-                Write-Output "[ Clean finished ]"
-            } else {
-                Write-Output "[ Build | Debug ]"
-                Write-Output "cmake --build ./cmake-build-debug --target dsvcol -j 9"
-                cmake --build ./cmake-build-debug --target dsvcol -j 9
-                Write-Output "[ Build finished ]"
-            }
+switch ($m) {
+    "debug" {
+        if ($c.IsPresent)
+        {
+            Write-Output "[ Clean | Debug ]"
+            Write-Output "cmake --build ./cmake-build-debug --target clean -j 9"
+            cmake --build ./cmake-build-debug --target dsvcol -j 9
+            Write-Output "[ Clean finished ]"
         }
-        "debug-tests" {
-            if ($c.IsPresent) {
-                Write-Output "[ Clean | Debug ]"
-                Write-Output "cmake --build ./cmake-build-debug --target clean -j 9"
-                cmake --build ./cmake-build-debug --target dsvcol -j 9
-                Write-Output "[ Clean finished ]"
-            } else {
-                Write-Output "[ Build | Debug ]"
-                Write-Output "cmake --build ./cmake-build-debug --target build-tests -j 9"
-                cmake --build ./cmake-build-debug --target dsvcol -j 9
-                Write-Output "[ Build finished ]"
-            }
-        }
-        "release" {
-            if ($c.IsPresent) {
-                Write-Output "[ Clean | Release ]"
-                Write-Output "cmake --build ./cmake-build-release --target clean -j 9"
-                cmake --build ./cmake-build-release --target dsvcol -j 9
-                Write-Output "[ Clean finished ]"
-            } else {
-                Write-Output "[ Build | Release ]"
-                Write-Output "cmake --build ./cmake-build-release --target dsvcol -j 9"
-                cmake --build ./cmake-build-release --target dsvcol -j 9
-                Write-Output "[ Build finished ]"
-            }
-        }
-        "release-tests" {
-            if ($c.IsPresent) {
-                Write-Output "[ Clean | Release ]"
-                Write-Output "cmake --build ./cmake-build-release --target clean -j 9"
-                cmake --build ./cmake-build-release --target dsvcol -j 9
-                Write-Output "[ Clean finished ]"
-            } else {
-                Write-Output "[ Build | Release ]"
-                Write-Output "cmake --build ./cmake-build-release --target build-tests -j 9"
-                cmake --build ./cmake-build-release --target dsvcol -j 9
-                Write-Output "[ Build finished ]"
-            }
-        }
-        Default {
-            Write-Error "Invalid build mode '$m'"
-            exit 1
+        else
+        {
+            Write-Output "[ Build | Debug ]"
+            Write-Output "cmake --build ./cmake-build-debug --target dsvcol -j 9"
+            cmake --build ./cmake-build-debug --target dsvcol -j 9
+            Write-Output "[ Build finished ]"
         }
     }
-} else {
-    Write-Error "Error: No build mode specified. Try 'build.sh -h' for more information."
-    exit 1
+    "debug-tests" {
+        if ($c.IsPresent)
+        {
+            Write-Output "[ Clean | Debug ]"
+            Write-Output "cmake --build ./cmake-build-debug --target clean -j 9"
+            cmake --build ./cmake-build-debug --target dsvcol -j 9
+            Write-Output "[ Clean finished ]"
+        }
+        else
+        {
+            Write-Output "[ Build | Debug ]"
+            Write-Output "cmake --build ./cmake-build-debug --target build-tests -j 9"
+            cmake --build ./cmake-build-debug --target dsvcol -j 9
+            Write-Output "[ Build finished ]"
+        }
+    }
+    "release" {
+        if ($c.IsPresent)
+        {
+            Write-Output "[ Clean | Release ]"
+            Write-Output "cmake --build ./cmake-build-release --target clean -j 9"
+            cmake --build ./cmake-build-release --target dsvcol -j 9
+            Write-Output "[ Clean finished ]"
+        }
+        else
+        {
+            Write-Output "[ Build | Release ]"
+            Write-Output "cmake --build ./cmake-build-release --target dsvcol -j 9"
+            cmake --build ./cmake-build-release --target dsvcol -j 9
+            Write-Output "[ Build finished ]"
+        }
+    }
+    "release-tests" {
+        if ($c.IsPresent)
+        {
+            Write-Output "[ Clean | Release ]"
+            Write-Output "cmake --build ./cmake-build-release --target clean -j 9"
+            cmake --build ./cmake-build-release --target dsvcol -j 9
+            Write-Output "[ Clean finished ]"
+        }
+        else
+        {
+            Write-Output "[ Build | Release ]"
+            Write-Output "cmake --build ./cmake-build-release --target build-tests -j 9"
+            cmake --build ./cmake-build-release --target dsvcol -j 9
+            Write-Output "[ Build finished ]"
+        }
+    }
+    Default {
+        if ($m -eq "") {
+            Write-Error "Error: No build mode specified. Try 'build.sh -h' for more information."
+            exit 1
+        }
+        Write-Error "Invalid build mode '$m'"
+        exit 1
+    }
 }
