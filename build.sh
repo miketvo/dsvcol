@@ -1,22 +1,19 @@
 #!/bin/bash
 #
-# Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ] [-c] [-h]
+# Syntax: build.sh -build.sh [Options] -m <build-mode>
 # Options:
-#   -d Specify the project's root directory. Use './' if you're already in the project's root.
 #   -m Specify build mode. Accepted values are 'debug', 'debug-test', 'release', and 'release-test'
-#   -c (Optional) Clean built files.  Use in conjunction with '-m'
+#   -c (Optional) Clean built files. Use in conjunction with '-m'
 #   -h (Optional) Display help and exit.
 #
 
 clean=0
-while getopts d:m:hc flag; do
+while getopts m:hc flag; do
   case "$flag" in
-  d) directory=${OPTARG} ;;
   m) mode=${OPTARG} ;;
   h)
-    echo "Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ]"
+    echo "Syntax: build.sh [Options] -m <build-mode>"
     echo "Options:"
-    echo "  -d Specify the project's root directory. Use './' if you're already in the project's root."
     echo "  -m Specify build mode. Accepted values are 'debug', 'debug-tests', 'release', and 'release-tests'"
     echo "  -c (Optional) Clean built files. Use in conjunction with '-m'"
     echo "  -h (Optional) Display this help and exit."
@@ -30,20 +27,11 @@ while getopts d:m:hc flag; do
   esac
 done
 
-if [ "" = "${directory}" ]; then
-  echo "Error: No directory provided. Try 'build.sh -h' for more information."
-  exit 1
-fi
-
 if [ "" = "${mode}" ]; then
   echo "Error: No build mode specified. Try 'build.sh -h' for more information."
   exit 1
 fi
 
-if [ ! -d "${directory}" ]; then
-  echo "Error: '${directory}' doesn't exist or isn't a directory."
-  exit 1
-fi
 
 case "$mode" in
 "debug")

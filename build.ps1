@@ -1,30 +1,27 @@
 #
-# Syntax: build.ps1 -d [ROOT_DIRECTORY] -m [ debug | release ] [-c] [-h]
+# Syntax: build.ps1 [Options] -m <build-mode>
 # Options:
-#   -d Specify the project's root directory. Use './' if you're already in the project's root.
 #   -m Specify build mode. Accepted values are 'debug', 'debug-test', 'release', and 'release-test'
-#   -c (Optional) Clean built files.  Use in conjunction with '-m'
+#   -c (Optional) Clean built files. Use in conjunction with '-m'
 #   -h (Optional) Display help and exit.
 #
 
 param(
-    [Parameter(Mandatory = $true)][string]$d,
-    [Parameter(Mandatory = $true)][string]$m,
+    [string]$m,
     [switch]$c,
     [switch]$h
 )
 
 if ($h.IsPresent) {
-    Write-Output "Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ]"
+    Write-Output "Syntax: build.ps1 [Options] -m <build-mode>"
     Write-Output "Options:"
-    Write-Output "  -d Specify the project's root directory. Use './' if you're already in the project's root."
-    Write-Output "  -m Specify build mode. Accepted values are 'debug', 'debug-test', 'release', and 'release-test'"
+    Write-Output "  -m Specify build mode. Accepted values are 'debug', 'debug-tests', 'release', and 'release-tests'"
     Write-Output "  -c (Optional) Clean built files. Use in conjunction with '-m'"
     Write-Output "  -h (Optional) Display this help and exit."
     exit 0
 }
 
-if (Test-Path -Path $d) {
+if ($m.IsPresent) {
     switch ($m) {
         "debug" {
             if ($c.IsPresent) {
@@ -39,7 +36,7 @@ if (Test-Path -Path $d) {
                 Write-Output "[ Build finished ]"
             }
         }
-        "debug-test" {
+        "debug-tests" {
             if ($c.IsPresent) {
                 Write-Output "[ Clean | Debug ]"
                 Write-Output "cmake --build ./cmake-build-debug --target clean -j 9"
@@ -65,7 +62,7 @@ if (Test-Path -Path $d) {
                 Write-Output "[ Build finished ]"
             }
         }
-        "release-test" {
+        "release-tests" {
             if ($c.IsPresent) {
                 Write-Output "[ Clean | Release ]"
                 Write-Output "cmake --build ./cmake-build-release --target clean -j 9"
@@ -84,6 +81,6 @@ if (Test-Path -Path $d) {
         }
     }
 } else {
-    Write-Error "Error: '$d' is not a valid directory."
+    Write-Error "Error: No build mode specified. Try 'build.sh -h' for more information."
     exit 1
 }
