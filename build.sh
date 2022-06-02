@@ -3,7 +3,7 @@
 # Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ] [-c] [-h]
 # Options:
 #   -d Specify the project's root directory. Use './' if you're already in the project's root.
-#   -m Specify build mode. Accepted values are 'debug' and 'release'
+#   -m Specify build mode. Accepted values are 'debug', 'debug-tests', 'release', and 'release-tests'
 #   -c (Optional) Clean built files.  Use in conjunction with '-m'
 #   -h (Optional) Display help and exit.
 #
@@ -16,7 +16,7 @@ while getopts d:m:hc flag; do
     echo "Syntax: build.sh -d [ROOT_DIRECTORY] -m [ debug | release ]"
     echo "Options:"
     echo "  -d Specify the project's root directory. Use './' if you're already in the project's root."
-    echo "  -m Specify build mode. Accepted values are 'debug' and 'release'"
+    echo "  -m Specify build mode. Accepted values are 'debug', 'debug-tests', 'release', and 'release-tests'"
     echo "  -c (Optional) Clean built files. Use in conjunction with '-m'"
     echo "  -h (Optional) Display this help and exit."
     exit 0
@@ -58,6 +58,19 @@ case "$mode" in
     echo "[ Build finished ]"
   fi
   ;;
+"debug-tests")
+  if [ "${clean}" -eq 1 ]; then
+    echo "[ Clean | Debug ]"
+    echo "cmake --build ./cmake-build-debug --target clean -j 9"
+    cmake --build ./cmake-build-debug --target dsvcol -j 9
+    echo "[ Clean finished ]"
+  else
+    echo "[ Build | Debug ]"
+    echo "cmake --build ./cmake-build-debug --target all -j 9"
+    cmake --build ./cmake-build-debug --target dsvcol -j 9
+    echo "[ Build finished ]"
+  fi
+  ;;
 "release")
   if [ "${clean}" -eq 1 ]; then
     echo "[ Clean | Release ]"
@@ -67,6 +80,19 @@ case "$mode" in
   else
     echo "[ Build | Release ]"
     echo "cmake --build ./cmake-build-release --target dsvcol -j 9"
+    cmake --build ./cmake-build-release --target dsvcol -j 9
+    echo "[ Build finished ]"
+  fi
+  ;;
+"release-tests")
+  if [ "${clean}" -eq 1 ]; then
+    echo "[ Clean | Release ]"
+    echo "cmake --build ./cmake-build-release --target clean -j 9"
+    cmake --build ./cmake-build-release --target dsvcol -j 9
+    echo "[ Clean finished ]"
+  else
+    echo "[ Build | Release ]"
+    echo "cmake --build ./cmake-build-release --target all -j 9"
     cmake --build ./cmake-build-release --target dsvcol -j 9
     echo "[ Build finished ]"
   fi
