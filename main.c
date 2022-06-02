@@ -3,6 +3,7 @@
 #include <getopt.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
 #include "include/util.h"
 #include "include/getline.h"
 #include "include/delimiter_optarg.h"
