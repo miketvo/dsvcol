@@ -150,7 +150,6 @@ int main(int argc, char *argv[]) {
             FILE *file = fopen(argv[optind], "r");
             if (file == NULL) {
                 print_file_not_found(argv[optind], strerror(errno));
-                fclose(file);
                 exit(EXIT_FAILURE);
             }
 
