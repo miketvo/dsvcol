@@ -17,7 +17,15 @@
 
 
 // TODO: Implement this
-void dsv_printline(const char *source, size_t source_size, const char *w_str, const char *delimiters, bool wrap) {
+size_t dsv_colcount(const char *source, size_t source_size, const char *delimiters) {
+    return 6;  // 6 according to /test/data/bos2021ModC.csv TODO: Remove this magic number
+}
+
+// TODO: Implement this
+void dsv_printline(
+        const char *source, size_t source_size, size_t cols,
+        const char *w_str, const char *delimiters, bool wrap
+) {
     size_t term_w;
 #if defined(_WIN32)
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -29,5 +37,10 @@ void dsv_printline(const char *source, size_t source_size, const char *w_str, co
     term_w = max.ws_col;
 #endif
 
-    printf("%u-", (unsigned int) term_w);
+    size_t col_w = term_w / cols;
+    for (size_t i = 0; i < source_size && i < term_w; i++) {
+        putchar(source[i]);
+        if (source[i] == '\n') return;
+    }
+    putchar('\n');
 }

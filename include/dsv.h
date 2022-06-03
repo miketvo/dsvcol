@@ -8,6 +8,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-void dsv_printline(const char *source, size_t source_size, const char *w_str, const char *delimiters, bool wrap);
+
+size_t dsv_colcount(const char *source, size_t source_size, const char *delimiters);
+
+void dsv_printline(
+        const char *source, size_t source_size, size_t cols,
+        const char *w_str, const char *delimiters, bool wrap
+);
 
 #endif //DSVCOL_DSV_H
