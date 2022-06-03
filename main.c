@@ -6,6 +6,7 @@
 #include <errno.h>
 #include "include/util.h"
 #include "include/getline.h"
+#include "include/dsv.h"
 #include "include/delimiter_optarg.h"
 
 
@@ -137,8 +138,8 @@ int main(int argc, char *argv[]) {
     if ((opt_flags._field & (1 << 5)) >> 5) {  // stdin mode
 
         while ((line_len = getline(&line, &buffer_len, stdin)) != -1) {
-            // TODO: Implement this
-            printf("%s", line);
+            // TODO: Implement w_str
+            dsv_printline(line, line_len, NULL, delimiters, false);
         }
         free(line);
 
@@ -154,8 +155,8 @@ int main(int argc, char *argv[]) {
             }
 
             while ((line_len = getline(&line, &buffer_len, file)) != -1) {
-                // TODO: Implement this
-                printf("%s", line);
+                // TODO: Implement w_str
+                dsv_printline(line, line_len, NULL, delimiters, false);
             }
             free(line);
             fclose(file);
