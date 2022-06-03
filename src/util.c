@@ -26,10 +26,6 @@ void print_file_not_found(const char *filename, const char *message) {
     fprintf(stderr, "%s: \033[1;31m%s:\033[0m '%s'\n", APP_NAME, message, filename);
 }
 
-void print_platform_undefined() {
-    fprintf(stderr, "%s: \033[1;31mFATAL ERROR: Can't determine operating system platform\033[0m\n", APP_NAME);
-}
-
 
 bool ischrin(const char el, const char *array, size_t nel) {
     for (size_t i = 0; i < nel; i++) {
