@@ -140,10 +140,7 @@ int main(int argc, char *argv[]) {
 
         while ((line_len = getline(&line, &buffer_len, stdin)) != -1) {
             // TODO: Implement w_str
-            if (cols == 0) {
-                cols = dsv_colcount(line, line_len, delimiters);
-            }
-            dsv_printline(line, line_len, cols, NULL, delimiters, false);
+            dsv_printrow(line, line_len, NULL, delimiters, false);
         }
         free(line);
 
@@ -160,10 +157,7 @@ int main(int argc, char *argv[]) {
 
             while ((line_len = getline(&line, &buffer_len, file)) != -1) {
                 // TODO: Implement w_str
-                if (cols == 0) {
-                    cols = dsv_colcount(line, line_len, delimiters);
-                }
-                dsv_printline(line, line_len, cols, NULL, delimiters, false);
+                dsv_printrow(line, line_len, NULL, delimiters, false);
             }
             free(line);
             fclose(file);

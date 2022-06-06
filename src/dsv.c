@@ -14,18 +14,50 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../include/dsv.h"
+#include "../include/glob.h"
 
 
-// TODO: Implement this
-size_t dsv_colcount(const char *source, size_t source_size, const char *delimiters) {
-    return 6;  // 6 according to /test/data/bos2021ModC.csv TODO: Remove this magic number
+/* Uitilites */
+enum dsverr {
+    EMPTY_1ST_ROW,
+    EMPTY_ROW,
+    MALFORMED,
+};
+
+void print_err(enum dsverr errcode) {
+    switch (errcode) {
+        case EMPTY_1ST_ROW:
+            fprintf(stderr, "%s: \033[1;31merror:\033[0m cannot determine number of columns.\n", APP_NAME);
+            break;
+        case EMPTY_ROW:
+            fprintf(stderr, "%s: \033[1;31merror:\033[0m row contains no data.\n", APP_NAME);
+            break;
+        case MALFORMED:
+            fprintf(stderr, "%s: \033[1;31merror:\033[0m malformed row.\n", APP_NAME);
+            break;
+        default:
+            fprintf(
+                    stderr,
+                    "%s: \033[1;31mDSV processor error:\033[0m Unrecognized error code '%d'",
+                    APP_NAME, errcode
+            );
+            exit(EXIT_FAILURE);
+    }
 }
+/* End of Uitilites */
 
-// TODO: Implement this
-void dsv_printline(
-        const char *source, size_t source_size, size_t cols,
-        const char *w_str, const char *delimiters, bool wrap
-) {
+
+/* Data definitions */
+/* End of Data definitions */
+
+
+/* Internal private functions */
+/* End of Internal private functions */
+
+
+/* Public function */
+void dsv_printrow(const char *line, size_t line_size, const char *w_str, const char *delimiters, bool wrap) {
+    // Get terminal width (platform independent)
     size_t term_w;
 #if defined(_WIN32)
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -37,10 +69,13 @@ void dsv_printline(
     term_w = max.ws_col;
 #endif
 
-    size_t col_w = term_w / cols;
-    for (size_t i = 0; i < source_size && i < term_w; i++) {
-        putchar(source[i]);
-        if (source[i] == '\n') return;
+    static size_t cols = 0;
+    if (cols == 0) {
+
+        if (cols == 0) {
+            print_err(EMPTY_ROW);
+            print_err(EMPTY_1ST_ROW);
+            exit(EXIT_FAILURE);
+        }
     }
-    putchar('\n');
 }

@@ -9,11 +9,25 @@
 #include <stdbool.h>
 
 
-size_t dsv_colcount(const char *source, size_t source_size, const char *delimiters);
-
-void dsv_printline(
-        const char *source, size_t source_size, size_t cols,
-        const char *w_str, const char *delimiters, bool wrap
+/***
+ * dsv.c top-level abstraction driver function. Takes in raw delimiter-separated line (const char *) and program
+ * settings then spits out pretty-printed row on stdout.
+ *
+ * The number of columns is determined only during the first call (and stored in a static variable). All subsequence
+ * calls force-print the data into that number of column regardless of actual number of tokens extracted. Thus, this
+ * function expects the inputs to have equal amounts of tokens; if not, stop program execution and throw an error.
+ *
+ * The only exposed component of dsv.c to the end-user.
+ *
+ * @param line
+ * @param line_size Not including the '\0' terminating character
+ * @param w_str
+ * @param delimiters
+ * @param wrap
+ */
+void dsv_printrow(
+        const char *line, size_t line_size,  // Raw text
+        const char *w_str, const char *delimiters, bool wrap  // Program settings
 );
 
 #endif //DSVCOL_DSV_H
