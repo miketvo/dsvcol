@@ -157,12 +157,13 @@ int main(int argc, char *argv[]) {
     for (size_t i = 0; i < strlen(raw_delimiters); i++) delimiters[i] = '\0';
     delimiter_optarg_nparse(raw_delimiters, delimiters, strlen(raw_delimiters));
 
-    // Guard clause for text-qualifier collision with delimiters
+    // Guard clause for opening text-qualifier collision with delimiters
     if (ischrin(text_qualifier[0], delimiters, strlen(delimiters))) {
         print_text_qualifer_collision(text_qualifier[0]);
         exit(EXIT_FAILURE);
     }
 
+    // Guard clause for closing text-qualifier collision with delimiters
     if (ischrin(text_qualifier[1], delimiters, strlen(delimiters))) {
         print_text_qualifer_collision(text_qualifier[1]);
         exit(EXIT_FAILURE);
