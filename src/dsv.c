@@ -16,7 +16,7 @@
 #include "../include/dsv.h"
 
 
-/* Data definitions */
+/* Data structures */
 enum alignment {
     LEFT, RIGHT, NUMERIC_JUSTIFIED
 };
@@ -36,7 +36,7 @@ struct row {
     struct col *cols;
     size_t size;
 };
-/* End of Data definitions */
+/* End of Data structures */
 
 
 /* Private functions */
