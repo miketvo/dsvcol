@@ -135,7 +135,6 @@ int main(int argc, char *argv[]) {
     char *line = NULL;
     size_t buffer_len = 0;
     ssize_t line_len;
-    size_t cols = 0;
     if ((opt_flags._field & (1 << 5)) >> 5) {  // stdin mode
 
         while ((line_len = getline(&line, &buffer_len, stdin)) != -1) {

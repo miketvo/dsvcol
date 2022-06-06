@@ -14,40 +14,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../include/dsv.h"
-#include "../include/glob.h"
-
-
-/* Uitilites */
-enum dsverr {
-    EMPTY_1ST_ROW,
-    EMPTY_ROW,
-    MALFORMED,
-};
-
-void print_err(enum dsverr errcode) {
-    switch (errcode) {
-        case EMPTY_1ST_ROW:
-            fprintf(stderr, "%s: \033[1;31merror:\033[0m cannot determine number of columns.\n", APP_NAME);
-            break;
-        case EMPTY_ROW:
-            fprintf(stderr, "%s: \033[1;31merror:\033[0m row contains no data.\n", APP_NAME);
-            break;
-        case MALFORMED:
-            fprintf(stderr, "%s: \033[1;31merror:\033[0m malformed row.\n", APP_NAME);
-            break;
-        default:
-            fprintf(
-                    stderr,
-                    "%s: \033[1;31mDSV processor error:\033[0m Unrecognized error code '%d'",
-                    APP_NAME, errcode
-            );
-            exit(EXIT_FAILURE);
-    }
-}
-/* End of Uitilites */
 
 
 /* Data definitions */
+struct token {
+    const char *value;
+    size_t size;
+};
+
+struct row {
+    struct token *cols;
+    size_t size;
+};
 /* End of Data definitions */
 
 
@@ -56,7 +34,7 @@ void print_err(enum dsverr errcode) {
 
 
 /* Public function */
-void dsv_printrow(const char *line, size_t line_size, const char *w_str, const char *delimiters, bool wrap) {
+enum dsverr dsv_printrow(const char *line, size_t line_size, const char *w_str, const char *delimiters, bool wrap) {
     // Get terminal width (platform independent)
     size_t term_w;
 #if defined(_WIN32)
@@ -72,10 +50,7 @@ void dsv_printrow(const char *line, size_t line_size, const char *w_str, const c
     static size_t cols = 0;
     if (cols == 0) {
 
-        if (cols == 0) {
-            print_err(EMPTY_ROW);
-            print_err(EMPTY_1ST_ROW);
-            exit(EXIT_FAILURE);
-        }
+        if (cols == 0)
+            return DSV_NO_COLS;
     }
 }

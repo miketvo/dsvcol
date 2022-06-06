@@ -34,8 +34,8 @@ int main() {
         if (strncmp(buffer, TEST[i].assertion, TEST[i].size) != 0) {
             fprintf(
                     stderr,
-                    "ERROR: [ index( %d ), input( '%s' ), size( %u ) ]: buffer( '%s' ) != assertion( '%s' )\n",
-                    (unsigned int) i, TEST[i].input, (unsigned int) TEST[i].size, buffer, TEST[i].assertion
+                    "ERROR: [ index( %d ), input( '%s' ), size( %llu ) ]: buffer( '%s' ) != assertion( '%s' )\n",
+                    (unsigned long long) i, TEST[i].input, (unsigned int) TEST[i].size, buffer, TEST[i].assertion
             );
             free(buffer);
             buffer = NULL;

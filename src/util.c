@@ -26,6 +26,28 @@ void print_file_not_found(const char *filename, const char *message) {
     fprintf(stderr, "%s: \033[1;31m%s:\033[0m '%s'\n", APP_NAME, message, filename);
 }
 
+void print_dsverr(enum dsverr errcode, size_t rowno) {
+    switch (errcode) {
+        case DSV_NO_COLS:
+            fprintf(stderr, "%s: \033[1;31merror:\033[0m row %llu contains no data.\n", APP_NAME, (unsigned long long) rowno);
+            fprintf(stderr, "%s: \033[1;31merror:\033[0m cannot determine number of columns.\n", APP_NAME);
+            break;
+        case DSV_EMPTY_ROW:
+            fprintf(stderr, "%s: \033[1;31merror:\033[0m row %llu contains no data.\n", APP_NAME, (unsigned long long) rowno);
+            break;
+        case DSV_MALFORMED_ROW:
+            fprintf(stderr, "%s: \033[1;31merror:\033[0m malformed row: %llu.\n", APP_NAME, (unsigned long long) rowno);
+            break;
+        default:
+            fprintf(
+                    stderr,
+                    "%s: \033[1;31mDSV processor error:\033[0m Unrecognized error code '%d'",
+                    APP_NAME, (int) errcode
+            );
+            exit(EXIT_FAILURE);
+    }
+}
+
 
 bool ischrin(const char el, const char *array, size_t nel) {
     for (size_t i = 0; i < nel; i++) {
