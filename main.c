@@ -182,9 +182,10 @@ int main(int argc, char *argv[]) {
     if (is_stdin_mode(opt_flags)) {  // stdin mode
 
         while ((line_len = getline(&line, &buffer_len, stdin)) != -1) {
-            // TODO: Implement w_str
             line_count++;
-            dsverrcode = dsv_printrow(line, line_len, NULL, delimiters, false);  // TODO: Implement w_str
+            dsverrcode = dsv_printrow(
+                    line, line_len, NULL, delimiters, text_qualifier, false
+            );  // TODO: Implement support for wide string
             if (dsverrcode != DSV_NOERR) {
                 print_dsverr(dsverrcode, line_count);
                 free(line);
@@ -206,7 +207,9 @@ int main(int argc, char *argv[]) {
 
             while ((line_len = getline(&line, &buffer_len, file)) != -1) {
                 line_count++;
-                dsverrcode = dsv_printrow(line, line_len, NULL, delimiters, false);  // TODO: Implement w_str
+                dsverrcode = dsv_printrow(
+                        line, line_len, NULL, delimiters, text_qualifier, false
+                );  // TODO: Implement support for wide string
                 if (dsverrcode != DSV_NOERR) {
                     print_dsverr(dsverrcode, line_count);
                     free(line);

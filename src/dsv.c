@@ -37,7 +37,10 @@ struct row tokenize(const char *str, const char *delimiters) {
 
 
 /* Public function */
-enum dsverr dsv_printrow(const char *line, size_t line_size, const char *w_str, const char *delimiters, bool wrap) {
+enum dsverr dsv_printrow(
+        const char *line, size_t line_size,
+        const char *w_config, const char *delimiters, const char *qualifiers, bool wrap
+) {
     // Get terminal width (platform independent)
     size_t term_w;
 #if defined(_WIN32)

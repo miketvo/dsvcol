@@ -31,13 +31,13 @@ enum dsverr {
  *
  * @param line
  * @param line_size Not including the '\0' terminating character
- * @param w_str
+ * @param w_config
  * @param delimiters
  * @param wrap
  */
 enum dsverr dsv_printrow(
         const char *line, size_t line_size,  // Raw text
-        const char *w_str, const char *delimiters, bool wrap  // Program settings
+        const char *w_config, const char *delimiters, const char *qualifiers, bool wrap  // Program settings
 );
 
 #endif //DSVCOL_DSV_H
