@@ -57,8 +57,12 @@ bool is_both_fd(struct opt_bit_field x) {
     return ((x._field & (1 << 6)) >> 6) && ((x._field & (1 << 5)) >> 5);
 }
 
+bool is_greedy_mode(struct opt_bit_field x) {
+    return (bool) opt_flags._field & 1;
+}
+
 bool is_stdin_mode(struct opt_bit_field x) {
-    return (opt_flags._field & (1 << 7)) >> 7;
+    return (bool) (opt_flags._field & (1 << 7)) >> 7;
 }
 
 
@@ -160,12 +164,12 @@ int main(int argc, char *argv[]) {
     // Guard clause for opening text-qualifier collision with delimiters
     if (ischrin(text_qualifier[0], delimiters, strlen(delimiters))) {
         print_text_qualifer_collision(text_qualifier[0]);
-        exit(EXIT_FAILURE);
-    }
 
-    // Guard clause for closing text-qualifier collision with delimiters
-    if (ischrin(text_qualifier[1], delimiters, strlen(delimiters))) {
-        print_text_qualifer_collision(text_qualifier[1]);
+        // Guard clause for closing text-qualifier collision with delimiters
+        if (ischrin(text_qualifier[1], delimiters, strlen(delimiters))) {
+            print_text_qualifer_collision(text_qualifier[1]);
+            exit(EXIT_FAILURE);
+        }
         exit(EXIT_FAILURE);
     }
     /* End of Delimiter processor */
@@ -184,7 +188,9 @@ int main(int argc, char *argv[]) {
         while ((line_len = getline(&line, &buffer_len, stdin)) != -1) {
             line_count++;
             dsverrcode = dsv_printrow(
-                    line, line_len, NULL, delimiters, text_qualifier, false
+                    line, line_len,
+                    NULL, delimiters, text_qualifier,
+                    false, is_greedy_mode(opt_flags)
             );  // TODO: Implement support for wide string
             if (dsverrcode != DSV_NOERR) {
                 print_dsverr(dsverrcode, line_count);
@@ -208,7 +214,9 @@ int main(int argc, char *argv[]) {
             while ((line_len = getline(&line, &buffer_len, file)) != -1) {
                 line_count++;
                 dsverrcode = dsv_printrow(
-                        line, line_len, NULL, delimiters, text_qualifier, false
+                        line, line_len,
+                        NULL, delimiters, text_qualifier,
+                        false, is_greedy_mode(opt_flags)
                 );  // TODO: Implement support for wide string
                 if (dsverrcode != DSV_NOERR) {
                     print_dsverr(dsverrcode, line_count);

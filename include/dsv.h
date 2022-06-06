@@ -36,8 +36,8 @@ enum dsverr {
  * @param wrap
  */
 enum dsverr dsv_printrow(
-        const char *line, size_t line_size,  // Raw text
-        const char *w_config, const char *delimiters, const char *qualifiers, bool wrap  // Program settings
+        const char *line, size_t line_size,
+        const char *w_config, const char *delimiters, const char *qualifiers, bool wrap, bool greedy
 );
 
 #endif //DSVCOL_DSV_H

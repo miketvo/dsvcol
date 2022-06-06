@@ -30,7 +30,7 @@ struct row {
 
 
 /* Private functions */
-struct row tokenize(const char *str, const char *delimiters) {
+struct row tokenize(const char *str, size_t str_len, const char *delimiters, const char *qualifiers, bool greedy) {
 
 }
 /* End of Private functions */
@@ -39,7 +39,7 @@ struct row tokenize(const char *str, const char *delimiters) {
 /* Public function */
 enum dsverr dsv_printrow(
         const char *line, size_t line_size,
-        const char *w_config, const char *delimiters, const char *qualifiers, bool wrap
+        const char *w_config, const char *delimiters, const char *qualifiers, bool wrap, bool greedy
 ) {
     // Get terminal width (platform independent)
     size_t term_w;
@@ -54,10 +54,15 @@ enum dsverr dsv_printrow(
 #endif
 
     static size_t cols = 0;
+    struct row row;
     if (cols == 0) {
-
-        if (cols == 0)
+        row = tokenize(line, line_size, delimiters, qualifiers, greedy);
+        if (cols == 0 && row.size != 0)
+            cols = row.size;
+        if (cols == 0 && row.size == 0)
             return DSV_NO_COLS;
+        if (cols != 0 && cols != row.size)
+            return DSV_MALFORMED_ROW;
     }
 
     return DSV_NOERR;
