@@ -25,7 +25,7 @@ add_test(ischrin.test test/ischrin.test)
 add_test(delimiter_optarg.test test/delimiter_optarg.test)
 add_test(getline.test test/getline.test)
 
-# Black box test
+# Black box test TODO: Find out why these tests produce different results on linux
 add_test(main.test.noopts dsvcol ./test/data/bos2021ModC.csv)
 add_test(main.test.f.opt.goodoptarg1 dsvcol -f csv ./test/data/bos2021ModC.csv)
 add_test(main.test.f.opt.goodoptarg2 dsvcol -f tsv ./test/data/bos2021ModC.tsv)
