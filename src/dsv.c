@@ -17,13 +17,23 @@
 
 
 /* Data definitions */
+enum alignment {
+    LEFT, RIGHT, NUMERIC_JUSTIFIED
+};
+
 struct token {
     const char *value;
     size_t size;
 };
 
+struct col {
+    struct token value;
+    size_t width;
+    enum alignment align;
+};
+
 struct row {
-    struct token *cols;
+    struct col *cols;
     size_t size;
 };
 /* End of Data definitions */
