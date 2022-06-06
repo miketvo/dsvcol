@@ -29,8 +29,11 @@ struct row {
 /* End of Data definitions */
 
 
-/* Internal private functions */
-/* End of Internal private functions */
+/* Private functions */
+struct row tokenize(const char *str, const char *delimiters) {
+
+}
+/* End of Private functions */
 
 
 /* Public function */

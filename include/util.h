@@ -12,6 +12,7 @@ void print_help();
 void print_version();
 void print_bad_usage();
 void print_optarg_error(const char *optarg);
+void print_text_qualifer_collision(char tq);
 void print_file_not_found(const char *filename, const char *message);
 void print_dsverr(enum dsverr errcode, size_t rowno);
 

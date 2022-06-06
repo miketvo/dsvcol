@@ -22,6 +22,10 @@ void print_optarg_error(const char *optarg) {
     fprintf(stderr, "%s: unknown argument '%s'\n", APP_NAME, optarg);
 }
 
+void print_text_qualifer_collision(char tq) {
+    fprintf(stderr, "%s: text qualifier collision with delimiter: %c\n", APP_NAME, tq);
+}
+
 void print_file_not_found(const char *filename, const char *message) {
     fprintf(stderr, "%s: \033[1;31m%s:\033[0m '%s'\n", APP_NAME, message, filename);
 }

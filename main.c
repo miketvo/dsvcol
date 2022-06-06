@@ -11,14 +11,16 @@
 
 
 const struct option LONG_OPTS[] = {
-        {"help",       no_argument,       NULL, 'h'},
-        {"version",    no_argument,       NULL, 'v'},
-        {"format",     required_argument, NULL, 'f'},
-        {"delimiter",  required_argument, NULL, 'd'},
-        {"has-header", no_argument,       NULL, 'H'},
-        {"col-width",  required_argument, NULL, 'w'},
-        {"wrap",       no_argument,       NULL, 'W'},
-        {0,            0, 0,                    0},
+        {"help",           no_argument,       NULL, 'h'},
+        {"version",        no_argument,       NULL, 'v'},
+        {"format",         required_argument, NULL, 'f'},
+        {"delimiters",     required_argument, NULL, 'd'},
+        {"text-qualifier", required_argument, NULL, 't'},
+        {"has-header",     no_argument,       NULL, 'H'},
+        {"col-width",      required_argument, NULL, 'w'},
+        {"wrap",           no_argument,       NULL, 'W'},
+        {"greedy",         no_argument,       NULL, 'g'},
+        {0,                0, 0,                    0},
 };
 
 const char *FORMAT_DEFS[] = {
@@ -33,25 +35,32 @@ const char *FORMAT_DELS[] = {
 
 
 struct opt_bit_field {
-    unsigned int _field: 6;
+    unsigned int _field: 8;
     /*
      * From the most significant bit to the least significant bit:
      *
-     *     (5) stdin mode: Read and process text from stdin. Useful for piping commands in the shell
-     *     (4) predefined format mode: User has specified that they want to use one of the formats in FORMAT_DEFS
-     *     (3) custom delimiter mode: User provides a custom delimiter
-     *     (2) specify if the input have a header line
-     *     (1) specify if the user has provided a custom column width layout
-     *     (0) specify if line-wrap is on
+     *     (7) stdin mode: Read and process text from stdin. Useful for piping commands in the shell
+     *     (6) predefined format mode: User has specified that they want to use one of the formats in FORMAT_DEFS
+     *     (5) custom delimiter mode: User provides a custom delimiter (default is comma - csv)
+     *     (4) custom text qualifier mode: User provides a custom text qualifier (default is double quote '"')
+     *     (3) specify if the input have a header line
+     *     (2) specify if the user has provided a custom column width layout
+     *     (1) specify if line-wrap is on
+     *     (0) specify if greedy mode is on (treat consecutive delimiters as one)
      *
-     * Note: (4) and (3) are mutually exclusive (they can't be both TRUE).
+     * Note: (6) and (5) are mutually exclusive (they can't be both TRUE).
      */
-} opt_flags = {0b000000};
+} opt_flags = {0b00000000};
 
 
 bool is_both_fd(struct opt_bit_field x) {
-    return ((x._field & (1 << 4)) >> 4) && ((x._field & (1 << 3)) >> 3);
+    return ((x._field & (1 << 6)) >> 6) && ((x._field & (1 << 5)) >> 5);
 }
+
+bool is_stdin_mode(struct opt_bit_field x) {
+    return (opt_flags._field & (1 << 7)) >> 7;
+}
+
 
 int main(int argc, char *argv[]) {
     /*
@@ -59,9 +68,10 @@ int main(int argc, char *argv[]) {
      */
     int opt;
     const char *raw_delimiters = ",";  // Default delimiter is the comma ',' (.csv)
+    char text_qualifier = '"';  // Default to double quote '"'
     while (1) {
         int longopt_index = 0;
-        opt = getopt_long(argc, argv, "hvf:d:Hw:W", LONG_OPTS, &longopt_index);
+        opt = getopt_long(argc, argv, "hvf:d:t:Hw:Wg", LONG_OPTS, &longopt_index);
         if (opt == -1) break;
 
         switch (opt) {
@@ -77,7 +87,7 @@ int main(int argc, char *argv[]) {
                     if (strcasecmp(optarg, FORMAT_DEFS[i]) == 0) {
                         is_valid_optarg = true;
                         raw_delimiters = FORMAT_DELS[i];
-                        opt_flags._field |= 1 << 4;
+                        opt_flags._field |= 1 << 6;
                     }
                 }
 
@@ -89,15 +99,22 @@ int main(int argc, char *argv[]) {
             }
             case 'd':
                 raw_delimiters = optarg;
-                opt_flags._field |= 1 << 3;
+                opt_flags._field |= 1 << 5;
+                break;
+            case 't':
+                text_qualifier = *optarg;  // Get only the first character of optarg. Everything else is discarded.
+                opt_flags._field |= 1 << 4;
                 break;
             case 'H':
-                opt_flags._field |= 1 << 2;
+                opt_flags._field |= 1 << 3;
                 break;
             case 'w':
-                opt_flags._field |= 1 << 1;
+                opt_flags._field |= 1 << 2;
                 break;
             case 'W':
+                opt_flags._field |= 1 << 1;
+                break;
+            case 'g':
                 opt_flags._field |= 1;
                 break;
             default: /* '?' */
@@ -118,15 +135,24 @@ int main(int argc, char *argv[]) {
 
     // Detect stdin mode
     if (optind == argc) {
-        opt_flags._field |= 1 << 5;
+        opt_flags._field |= 1 << 7;
     }
     /* End of arguments processing */
 
 
-    // Generate delimiter string
+    /*
+     * Delimiter processor
+     */
     char *delimiters = calloc(strlen(raw_delimiters) + 1, sizeof(char));
     for (size_t i = 0; i < strlen(raw_delimiters); i++) delimiters[i] = '\0';
     delimiter_optarg_nparse(raw_delimiters, delimiters, strlen(raw_delimiters));
+
+    // Guard clause for text-qualifier collision with delimiters
+    if (ischrin(text_qualifier, delimiters, strlen(delimiters))) {
+        print_text_qualifer_collision(text_qualifier);
+        exit(EXIT_FAILURE);
+    }
+    /* End of Delimiter processor */
 
 
     /*
@@ -137,7 +163,7 @@ int main(int argc, char *argv[]) {
     ssize_t line_len;
     size_t line_count = 0;
     enum dsverr dsverrcode;
-    if ((opt_flags._field & (1 << 5)) >> 5) {  // stdin mode
+    if (is_stdin_mode(opt_flags)) {  // stdin mode
 
         while ((line_len = getline(&line, &buffer_len, stdin)) != -1) {
             // TODO: Implement w_str
@@ -178,7 +204,7 @@ int main(int argc, char *argv[]) {
         #pragma clang diagnostic pop
 
     }
-    /* End of main dsv processor */
+    /* End of Main dsv processor */
 
 
     free(delimiters);

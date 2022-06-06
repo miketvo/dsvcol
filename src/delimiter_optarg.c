@@ -14,9 +14,6 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
     size_t i = 0;
     while (*c && i < n) {
         switch (*c) {
-            case '"':
-                fprintf(stderr, "%s: invalid delimiter: %c", APP_NAME, *c);
-                exit(EXIT_FAILURE);
             case ESC_BKSLASH:
                 switch (*(c + 1)) {
                     case ESC_TAB:
