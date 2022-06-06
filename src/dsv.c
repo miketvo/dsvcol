@@ -53,4 +53,6 @@ enum dsverr dsv_printrow(const char *line, size_t line_size, const char *w_str, 
         if (cols == 0)
             return DSV_NO_COLS;
     }
+
+    return DSV_NOERR;
 }

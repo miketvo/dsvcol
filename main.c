@@ -135,11 +135,19 @@ int main(int argc, char *argv[]) {
     char *line = NULL;
     size_t buffer_len = 0;
     ssize_t line_len;
+    size_t line_count = 0;
+    enum dsverr dsverrcode;
     if ((opt_flags._field & (1 << 5)) >> 5) {  // stdin mode
 
         while ((line_len = getline(&line, &buffer_len, stdin)) != -1) {
             // TODO: Implement w_str
-            dsv_printrow(line, line_len, NULL, delimiters, false);
+            line_count++;
+            dsverrcode = dsv_printrow(line, line_len, NULL, delimiters, false);  // TODO: Implement w_str
+            if (dsverrcode != DSV_NOERR) {
+                print_dsverr(dsverrcode, line_count);
+                free(line);
+                exit(EXIT_FAILURE);
+            }
         }
         free(line);
 
@@ -155,8 +163,13 @@ int main(int argc, char *argv[]) {
             }
 
             while ((line_len = getline(&line, &buffer_len, file)) != -1) {
-                // TODO: Implement w_str
-                dsv_printrow(line, line_len, NULL, delimiters, false);
+                line_count++;
+                dsverrcode = dsv_printrow(line, line_len, NULL, delimiters, false);  // TODO: Implement w_str
+                if (dsverrcode != DSV_NOERR) {
+                    print_dsverr(dsverrcode, line_count);
+                    free(line);
+                    exit(EXIT_FAILURE);
+                }
             }
             free(line);
             fclose(file);

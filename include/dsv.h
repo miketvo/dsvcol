@@ -13,6 +13,7 @@
  * Return type facility for dsv_printrow() below
  */
 enum dsverr {
+    DSV_NOERR,
     DSV_NO_COLS,
     DSV_EMPTY_ROW,
     DSV_MALFORMED_ROW,

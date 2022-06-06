@@ -28,6 +28,13 @@ void print_file_not_found(const char *filename, const char *message) {
 
 void print_dsverr(enum dsverr errcode, size_t rowno) {
     switch (errcode) {
+        case DSV_NOERR:
+            fprintf(
+                    stderr,
+                    "%s: \033[1;31mprint_dsverr():\033[0m cannot print DSV_NOERR",
+                    APP_NAME
+            );
+            exit(EXIT_FAILURE);
         case DSV_NO_COLS:
             fprintf(stderr, "%s: \033[1;31merror:\033[0m row %llu contains no data.\n", APP_NAME, (unsigned long long) rowno);
             fprintf(stderr, "%s: \033[1;31merror:\033[0m cannot determine number of columns.\n", APP_NAME);
