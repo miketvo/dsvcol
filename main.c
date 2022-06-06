@@ -58,11 +58,11 @@ bool is_both_fd(struct opt_bit_field x) {
 }
 
 bool is_greedy_mode(struct opt_bit_field x) {
-    return (bool) opt_flags._field & 1;
+    return (bool) x._field & 1;
 }
 
 bool is_stdin_mode(struct opt_bit_field x) {
-    return (bool) (opt_flags._field & (1 << 7)) >> 7;
+    return (bool) (x._field & (1 << 7)) >> 7;
 }
 
 

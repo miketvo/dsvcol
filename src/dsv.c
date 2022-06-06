@@ -54,12 +54,12 @@ enum dsverr dsv_printrow(
 #endif
 
     static size_t cols = 0;
-    struct row row;
+    struct row row = { NULL, 0 };
     if (cols == 0) {
         row = tokenize(line, line_size, delimiters, qualifiers, greedy);
         if (cols == 0 && row.size != 0)
             cols = row.size;
-        if (cols == 0 && row.size == 0)
+        if (cols == 0 && (row.size == 0 || row.cols == NULL))
             return DSV_NO_COLS;
         if (cols != 0 && cols != row.size)
             return DSV_MALFORMED_ROW;
