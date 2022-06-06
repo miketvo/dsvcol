@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
      */
     int opt;
     const char *raw_delimiters = ",";  // Default delimiter is the comma ',' (.csv)
-    char text_qualifier = '"';  // Default to double quote '"'
+    char *text_qualifier = "\"\"";  // Default to double quote '"'
     while (1) {
         int longopt_index = 0;
         opt = getopt_long(argc, argv, "hvf:d:t:Hw:Wg", LONG_OPTS, &longopt_index);
@@ -102,7 +102,17 @@ int main(int argc, char *argv[]) {
                 opt_flags._field |= 1 << 5;
                 break;
             case 't':
-                text_qualifier = *optarg;  // Get only the first character of optarg. Everything else is discarded.
+                // optarg can have at most 2 characters: one for the opening qualifier and one for the closing qualifier
+                if (strlen(optarg) > 2) {
+                    print_text_qualifer_optarg_error(optarg);
+                    exit(EXIT_FAILURE);
+                }
+                text_qualifier = optarg;
+
+                // If user input only 1 character, assume the opening and closing qualifier are the same character
+                if (strlen(text_qualifier) == 1) {
+                    strncat(text_qualifier, text_qualifier, 1);
+                }
                 opt_flags._field |= 1 << 4;
                 break;
             case 'H':
@@ -148,8 +158,13 @@ int main(int argc, char *argv[]) {
     delimiter_optarg_nparse(raw_delimiters, delimiters, strlen(raw_delimiters));
 
     // Guard clause for text-qualifier collision with delimiters
-    if (ischrin(text_qualifier, delimiters, strlen(delimiters))) {
-        print_text_qualifer_collision(text_qualifier);
+    if (ischrin(text_qualifier[0], delimiters, strlen(delimiters))) {
+        print_text_qualifer_collision(text_qualifier[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    if (ischrin(text_qualifier[1], delimiters, strlen(delimiters))) {
+        print_text_qualifer_collision(text_qualifier[1]);
         exit(EXIT_FAILURE);
     }
     /* End of Delimiter processor */

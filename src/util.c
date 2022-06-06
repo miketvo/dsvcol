@@ -22,6 +22,10 @@ void print_optarg_error(const char *optarg) {
     fprintf(stderr, "%s: unknown argument '%s'\n", APP_NAME, optarg);
 }
 
+void print_text_qualifer_optarg_error(const char *tq_optarg) {
+    fprintf(stderr, "%s: too many text qualifiers: '%s'\n", APP_NAME, tq_optarg);
+}
+
 void print_text_qualifer_collision(char tq) {
     fprintf(stderr, "%s: text qualifier collision with delimiter: %c\n", APP_NAME, tq);
 }
