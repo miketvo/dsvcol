@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
                 break;
             case 'w':
                 opt_flags._field |= 1 << 2;
-                w_config = optarg;  // TODO: Implement actual parsing here
+                w_config = optarg;
                 break;
             case 'W':
                 opt_flags._field |= 1 << 1;
