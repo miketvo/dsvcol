@@ -57,6 +57,10 @@ bool is_both_fd(struct opt_bit_field x) {
     return ((x._field & (1 << 6)) >> 6) && ((x._field & (1 << 5)) >> 5);
 }
 
+bool is_wrap(struct opt_bit_field x) {
+    return (bool) (x._field & (1 << 1)) >> 1;
+}
+
 bool is_greedy_mode(struct opt_bit_field x) {
     return (bool) x._field & 1;
 }
@@ -73,6 +77,7 @@ int main(int argc, char *argv[]) {
     int opt;
     const char *raw_delimiters = ",";  // Default delimiter is the comma ',' (.csv)
     char *text_qualifier = "\"\"";  // Default to double quote '"'
+    const char *w_config = "auto";  // Default to left aligned columns of equal widths
     while (1) {
         int longopt_index = 0;
         opt = getopt_long(argc, argv, "hvf:d:t:Hw:Wg", LONG_OPTS, &longopt_index);
@@ -124,6 +129,7 @@ int main(int argc, char *argv[]) {
                 break;
             case 'w':
                 opt_flags._field |= 1 << 2;
+                w_config = optarg;  // TODO: Implement actual parsing here
                 break;
             case 'W':
                 opt_flags._field |= 1 << 1;
@@ -189,8 +195,8 @@ int main(int argc, char *argv[]) {
             line_count++;
             dsverrcode = dsv_printrow(
                     line, line_len,
-                    NULL, delimiters, text_qualifier,
-                    false, is_greedy_mode(opt_flags)
+                    w_config, delimiters, text_qualifier,
+                    is_wrap(opt_flags), is_greedy_mode(opt_flags)
             );  // TODO: Implement support for wide string
             if (dsverrcode != DSV_NOERR) {
                 print_dsverr(dsverrcode, line_count);
@@ -215,8 +221,8 @@ int main(int argc, char *argv[]) {
                 line_count++;
                 dsverrcode = dsv_printrow(
                         line, line_len,
-                        NULL, delimiters, text_qualifier,
-                        false, is_greedy_mode(opt_flags)
+                        w_config, delimiters, text_qualifier,
+                        is_wrap(opt_flags), is_greedy_mode(opt_flags)
                 );  // TODO: Implement support for wide string
                 if (dsverrcode != DSV_NOERR) {
                     print_dsverr(dsverrcode, line_count);
