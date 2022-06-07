@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <unistd.h>
+#include <unistd.h>  // ssize_t - Some compilers need this, some don't
 #include <stdio.h>
 #include <getopt.h>
 #include <string.h>
