@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../include/dsv.h"
+#include "../include/util.h"
 
 
 /* Data structures */
@@ -41,8 +42,25 @@ struct row {
 
 /* Private functions */
 struct row tokenize(const char *str, size_t str_len, const char *delimiters, const char *qualifiers, bool greedy) {
-    // That's enough for today TODO: Tomorrow: Implement tokenize()
+    const char *p = str;
     struct row r = { NULL, 0 };
+    struct col curr_col = { NULL, 0, LEFT };
+    struct token curr_tok = { NULL, 0 };
+    size_t tok_start = 0;
+
+    // TODO: Finish implementing tokenize()
+    while (p - str < str_len) {
+        if (ischrin(*p, qualifiers, 2)) {
+            do {
+                p++;
+            } while (!ischrin(*p, qualifiers, str_len) && (p - str < str_len));
+        } else {
+            while (!ischrin(*p, delimiters, str_len) && (p - str < str_len)) {
+                p++;
+            }
+        }
+    }
+
     return r;
 }
 /* End of Private functions */
