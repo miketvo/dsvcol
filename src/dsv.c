@@ -49,17 +49,17 @@ struct row tokenize(const char *str, size_t str_len, const char *delimiters, con
     size_t tok_start = 0;
 
     // TODO: Finish implementing tokenize()
-    while (p - str < str_len) {
-        if (ischrin(*p, qualifiers, 2)) {
-            do {
-                p++;
-            } while (!ischrin(*p, qualifiers, str_len) && (p - str < str_len));
-        } else {
-            while (!ischrin(*p, delimiters, str_len) && (p - str < str_len)) {
-                p++;
-            }
-        }
-    }
+//    while (p - str < str_len) {
+//        if (ischrin(*p, qualifiers, 2)) {
+//            do {
+//                p++;
+//            } while (!ischrin(*p, qualifiers, str_len) && (p - str < str_len));
+//        } else {
+//            while (!ischrin(*p, delimiters, str_len) && (p - str < str_len)) {
+//                p++;
+//            }
+//        }
+//    }
 
     return r;
 }
