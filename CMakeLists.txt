@@ -25,15 +25,15 @@ add_test(ischrin.test test/ischrin.test)
 add_test(delimiter_optarg.test test/delimiter_optarg.test)
 add_test(getline.test test/getline.test)
 
-# Black box test TODO: Find out why these tests produce different results on linux !!!Highest priority!!!
+# Black box test
 add_test(main.test.noopts dsvcol ./test/data/bos2021ModC.csv)
 add_test(main.test.f.opt.goodoptarg1 dsvcol -f csv ./test/data/bos2021ModC.csv)
 add_test(main.test.f.opt.goodoptarg2 dsvcol -f tsv ./test/data/bos2021ModC.tsv)
 add_test(main.test.d.opt.goodoptarg3 dsvcol -d | ./test/data/bos2021ModC.dat)
-add_test(main.test.t.opt dsvcol -t \" ./test/data/bos2021ModC.csv)
-add_test(main.test.ft.opt.goodoptarg1 dsvcol -f csv -t \" ./test/data/bos2021ModC.csv)
-add_test(main.test.ft.opt.goodoptarg2 dsvcol -f tsv -t \" ./test/data/bos2021ModC.tsv)
-add_test(main.test.dt.opt.goodoptarg3 dsvcol -d | -t \" ./test/data/bos2021ModC.dat)
+add_test(main.test.t.opt dsvcol -t \"\" ./test/data/bos2021ModC.csv)
+add_test(main.test.ft.opt.goodoptarg1 dsvcol -f csv -t \"\" ./test/data/bos2021ModC.csv)
+add_test(main.test.ft.opt.goodoptarg2 dsvcol -f tsv -t \"\" ./test/data/bos2021ModC.tsv)
+add_test(main.test.dt.opt.goodoptarg3 dsvcol -d | -t \"\" ./test/data/bos2021ModC.dat)
 
 # Black box test (negative)
 add_test(main.test.errfile dsvcol ./thisfileshouldnotexist.file)
