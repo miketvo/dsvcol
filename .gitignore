@@ -14,7 +14,11 @@ _deps
 # Build folders
 /cmake-build-debug/
 /cmake-build-release/
+/build/
 
 # IntelliJ Clion
 /.idea/
+
+# Visual Studio Code
+/.vscode/
 
