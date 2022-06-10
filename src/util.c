@@ -51,7 +51,7 @@ void print_dsverr(enum dsverr errcode, size_t rowno) {
             fprintf(stderr, "%s: \033[1;31merror:\033[0m row %llu contains no data.\n", APP_NAME, (unsigned long long) rowno);
             break;
         case DSV_MALFORMED_ROW:
-            fprintf(stderr, "%s: \033[1;31merror:\033[0m malformed row: %llu.\n", APP_NAME, (unsigned long long) rowno);
+            fprintf(stderr, "%s: \033[1;31merror:\033[0m malformed row: %llu\n", APP_NAME, (unsigned long long) rowno);
             break;
         default:
             fprintf(
