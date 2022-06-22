@@ -143,6 +143,6 @@ enum dsverr dsv_printrow(
     }
     putchar('\n');
 
-    if (curr_cols < cols) return DSV_MALFORMED_ROW;
+    if (0 < curr_cols && curr_cols < cols) return DSV_MALFORMED_ROW;  // Ignore blank lines
     return DSV_NOERR;
 }
