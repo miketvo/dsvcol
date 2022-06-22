@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
     const char *w_config = "auto";  // Default to left aligned columns of equal widths
     while (1) {
         int longopt_index = 0;
-        opt = getopt_long(argc, argv, "hvf:d:t:Hw:Wg", LONG_OPTS, &longopt_index);
+        opt = getopt_long(argc, argv, "hvf:d:t:Hw:Wgs", LONG_OPTS, &longopt_index);
         if (opt == -1) break;
 
         switch (opt) {
