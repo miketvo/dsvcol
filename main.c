@@ -72,7 +72,7 @@ bool is_greedy_mode(struct opt_bit_field x) {
 }
 
 bool is_strict_mode(struct opt_bit_field x) {
-    return (bool) x._field & 1;
+    return (bool) (x._field & 1);
 }
 
 
@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
 
     // Detect stdin mode
     if (optind == argc) {
-        opt_flags._field |= 1 << 7;
+        opt_flags._field |= 1 << 8;
     }
     /* End of arguments processing */
 
