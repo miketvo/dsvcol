@@ -70,7 +70,7 @@ void print_col(const char *token, size_t col_width, enum alignment col_align) {
     char *format_str;
     switch (col_align) {
         case RIGHT: {
-            snprintf(col_width_str, COL_WIDTH_DIGIT_LIMIT, "%llu", col_width - 1);
+            snprintf(col_width_str, COL_WIDTH_DIGIT_LIMIT, "%llu", (unsigned long long) col_width - 1);
             format_str = calloc(strlen(col_width_str) * 2 + 5, sizeof(char));
             strcat(format_str, "%");
             strcat(format_str, col_width_str);
