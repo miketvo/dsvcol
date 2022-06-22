@@ -56,7 +56,7 @@ struct opt_bit_field {
 
 
 bool is_stdin_mode(struct opt_bit_field x) {
-    return (bool) (x._field & (1 << 8)) >> 8;
+    return (x._field & (1 << 8)) >> 8;
 }
 
 bool is_both_fd(struct opt_bit_field x) {
@@ -64,15 +64,15 @@ bool is_both_fd(struct opt_bit_field x) {
 }
 
 bool is_wrap(struct opt_bit_field x) {
-    return (bool) (x._field & (1 << 2)) >> 2;
+    return (x._field & (1 << 2)) >> 2;
 }
 
 bool is_greedy_mode(struct opt_bit_field x) {
-    return (bool) (x._field & (1 << 1)) >> 1;
+    return (x._field & (1 << 1)) >> 1;
 }
 
 bool is_strict_mode(struct opt_bit_field x) {
-    return (bool) (x._field & 1);
+    return x._field & 1;
 }
 
 

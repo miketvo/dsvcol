@@ -29,6 +29,11 @@ struct token {
 
 struct token tokenize(const char *str, size_t str_size, const char *delimiters, const char *qualifiers, bool greedy) {
     struct token result = {str, str};
+    if (greedy) {
+        while (ischrin(*result.begin, delimiters, strlen(delimiters)))
+            result.begin++;
+        result.end = result.begin;
+    }
 
     while (!ischrin(*result.end, delimiters, strlen(delimiters)) && *result.end != '\n' && result.end - str < str_size) {
         if (*result.end == qualifiers[0]) {
@@ -38,11 +43,7 @@ struct token tokenize(const char *str, size_t str_size, const char *delimiters, 
         }
         result.end++;
     }
-
-    if (greedy) {
-        while (ischrin(*result.end, delimiters, strlen(delimiters)))
-            result.end++;
-    } else result.end++;
+    result.end++;
 
     return result;
 }
