@@ -20,6 +20,7 @@ const struct option LONG_OPTS[] = {
         {"col-width",      required_argument, NULL, 'w'},
         {"wrap",           no_argument,       NULL, 'W'},
         {"greedy",         no_argument,       NULL, 'g'},
+        {"strict",         no_argument,       NULL, 's'},
         {0,                0, 0,                    0},
 };
 
@@ -35,38 +36,43 @@ const char *FORMAT_DELS[] = {
 
 
 struct opt_bit_field {
-    unsigned int _field: 8;
+    unsigned int _field: 9;
     /*
      * From the most significant bit to the least significant bit:
      *
-     *     (7) stdin mode: Read and process text from stdin. Useful for piping commands in the shell
-     *     (6) predefined format mode: User has specified that they want to use one of the formats in FORMAT_DEFS
-     *     (5) custom delimiter mode: User provides a custom delimiter (default is comma - csv)
-     *     (4) custom text qualifier mode: User provides a custom text qualifier (default is double quote '"')
-     *     (3) specify if the input have a header line
-     *     (2) specify if the user has provided a custom column width layout
-     *     (1) specify if line-wrap is on
-     *     (0) specify if greedy mode is on (treat consecutive delimiters as one)
+     *     (8) stdin mode: Read and process text from stdin. Useful for piping commands in the shell
+     *     (7) predefined format mode: User has specified that they want to use one of the formats in FORMAT_DEFS
+     *     (6) custom delimiter mode: User provides a custom delimiter (default is comma - csv)
+     *     (5) custom text qualifier mode: User provides a custom text qualifier (default is double quote '"')
+     *     (4) specify if the input have a header line
+     *     (3) specify if the user has provided a custom column width layout
+     *     (2) specify if line-wrap is on
+     *     (1) specify if greedy mode is on (treat consecutive delimiters as one)
+     *     (0) specify if strict mode is on (throw error and stop execution upon encountering corrupt data)
      *
      * Note: (6) and (5) are mutually exclusive (they can't be both TRUE).
      */
-} opt_flags = {0b00000000};
+} opt_flags = {0b0};
 
+
+bool is_stdin_mode(struct opt_bit_field x) {
+    return (bool) (x._field & (1 << 8)) >> 8;
+}
 
 bool is_both_fd(struct opt_bit_field x) {
-    return ((x._field & (1 << 6)) >> 6) && ((x._field & (1 << 5)) >> 5);
+    return ((x._field & (1 << 7)) >> 7) && ((x._field & (1 << 6)) >> 6);
 }
 
 bool is_wrap(struct opt_bit_field x) {
-    return (bool) (x._field & (1 << 1)) >> 1;
+    return (bool) (x._field & (1 << 2)) >> 2;
 }
 
 bool is_greedy_mode(struct opt_bit_field x) {
-    return (bool) x._field & 1;
+    return (bool) (x._field & (1 << 1)) >> 1;
 }
 
-bool is_stdin_mode(struct opt_bit_field x) {
-    return (bool) (x._field & (1 << 7)) >> 7;
+bool is_strict_mode(struct opt_bit_field x) {
+    return (bool) x._field & 1;
 }
 
 
@@ -96,7 +102,7 @@ int main(int argc, char *argv[]) {
                     if (strcasecmp(optarg, FORMAT_DEFS[i]) == 0) {
                         is_valid_optarg = true;
                         raw_delimiters = FORMAT_DELS[i];
-                        opt_flags._field |= 1 << 6;
+                        opt_flags._field |= 1 << 7;
                     }
                 }
 
@@ -108,7 +114,7 @@ int main(int argc, char *argv[]) {
             }
             case 'd':
                 raw_delimiters = optarg;
-                opt_flags._field |= 1 << 5;
+                opt_flags._field |= 1 << 6;
                 break;
             case 't':
                 // optarg can have at most 2 characters: one for the opening qualifier and one for the closing qualifier
@@ -122,19 +128,22 @@ int main(int argc, char *argv[]) {
                 if (strlen(text_qualifier) == 1) {
                     strncat(text_qualifier, text_qualifier, 1);
                 }
-                opt_flags._field |= 1 << 4;
+                opt_flags._field |= 1 << 5;
                 break;
             case 'H':
-                opt_flags._field |= 1 << 3;
+                opt_flags._field |= 1 << 4;
                 break;
             case 'w':
-                opt_flags._field |= 1 << 2;
+                opt_flags._field |= 1 << 3;
                 w_config = optarg;
                 break;
             case 'W':
-                opt_flags._field |= 1 << 1;
+                opt_flags._field |= 1 << 2;
                 break;
             case 'g':
+                opt_flags._field |= 1 << 1;
+                break;
+            case 's':
                 opt_flags._field |= 1;
                 break;
             default: /* '?' */
@@ -198,7 +207,7 @@ int main(int argc, char *argv[]) {
                     w_config, delimiters, text_qualifier,
                     is_wrap(opt_flags), is_greedy_mode(opt_flags)
             );  // TODO: Implement support for wide string
-            if (dsverrcode != DSV_NOERR) {
+            if (is_strict_mode(opt_flags) && dsverrcode != DSV_NOERR) {
                 print_dsverr(dsverrcode, line_count);
                 free(line);
                 exit(EXIT_FAILURE);
@@ -224,7 +233,7 @@ int main(int argc, char *argv[]) {
                         w_config, delimiters, text_qualifier,
                         is_wrap(opt_flags), is_greedy_mode(opt_flags)
                 );  // TODO: Implement support for wide string
-                if (dsverrcode != DSV_NOERR) {
+                if (is_strict_mode(opt_flags) && dsverrcode != DSV_NOERR) {
                     print_dsverr(dsverrcode, line_count);
                     free(line);
                     exit(EXIT_FAILURE);
