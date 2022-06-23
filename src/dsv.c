@@ -3,9 +3,7 @@
 //
 #if defined(_WIN32)
 #define PLATFORM_DECTECTED 1
-
 #include <windows.h>
-
 #else
 #define PLATFORM_DECTECTED 1
 #include <sys/ioctl.h>
