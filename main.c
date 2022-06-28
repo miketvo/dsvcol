@@ -1,5 +1,6 @@
 #include <locale.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <stdio.h>
 #include <getopt.h>
 #include <string.h>
