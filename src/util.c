@@ -64,6 +64,7 @@ void print_dsverr(enum dsverr errcode, size_t rowno) {
 }
 
 
+// Safer alternative to strchr
 bool ischrin(const char el, const char *array, size_t nel) {
     for (size_t i = 0; i < nel; i++) {
         if (el == array[i]) return true;
