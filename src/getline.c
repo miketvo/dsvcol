@@ -2,11 +2,12 @@
 // Created by miketvo on 6/1/2022.
 //
 #include <stdlib.h>
+#include <wchar.h>
 #include <errno.h>
 #include "../include/getline.h"
 
 
-ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stream) {
+ssize_t getline(wchar_t **restrict lineptr, size_t *restrict n, FILE *restrict stream) {
     if (lineptr == NULL || n == NULL) {
         errno = EINVAL;
         return -1;
@@ -20,17 +21,17 @@ ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stre
         return -1;
     }
 
-    char *buffer = calloc(*n + 1, sizeof(char));
-    char c;
+    wchar_t *buffer = calloc(*n + 1, sizeof(wchar_t));
+    wchar_t c;
     size_t len = 0;
     while (1) {
-        c = (char) fgetc(stream);
-        if (c == EOF) break;
+        c = fgetwc(stream);
+        if (c == WEOF) break;
         buffer[len] = c;
         len++;
         if (len > *n) {
-            char *temp_buffer;
-            temp_buffer = realloc(buffer, (len + 1) * sizeof(char));
+            wchar_t *temp_buffer;
+            temp_buffer = realloc(buffer, (len + 1) * sizeof(wchar_t));
             if (temp_buffer == NULL) {
                 free(buffer);
                 errno = ENOMEM;
@@ -40,7 +41,7 @@ ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stre
             *n = len;
         }
         if (c == '\n') break;
-    };
+    }
     buffer[len] = '\0';
 
     *lineptr = buffer;

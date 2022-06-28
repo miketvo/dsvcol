@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <string.h>
+#include <wchar.h>
 #include <stdbool.h>
 #include <errno.h>
 #include "include/util.h"
@@ -29,9 +30,9 @@ const char *FORMAT_DEFS[] = {
         "tsv",
 };
 
-const char *FORMAT_DELS[] = {
-        ",",
-        "\t",
+const wchar_t *FORMAT_DELS[] = {
+        L",",
+        L"\t",
 };
 
 
@@ -81,9 +82,10 @@ int main(int argc, char *argv[]) {
      * Arguments processing
      */
     int opt;
-    const char *raw_delimiters = ",";  // Default delimiter is the comma ',' (.csv)
-    char *text_qualifier = "\"\"";  // Default to double quote '"'
+    const wchar_t *raw_delimiters = L",";  // Default delimiter is the comma ',' (.csv)
+    wchar_t *text_qualifier = L"\"\"";  // Default to double quote '"'
     const char *w_config = "auto";  // Default to left aligned columns of equal widths
+    wchar_t *wcoptarg;
     while (1) {
         int longopt_index = 0;
         opt = getopt_long(argc, argv, "hvf:d:t:Hw:Wgs", LONG_OPTS, &longopt_index);
@@ -97,6 +99,9 @@ int main(int argc, char *argv[]) {
                 print_version();
                 exit(EXIT_SUCCESS);
             case 'f': {
+                wcoptarg = calloc(strlen(optarg), sizeof(wchar_t));
+                mbstowcs(wcoptarg, optarg, strlen(optarg));
+
                 bool is_valid_optarg = false;
                 for (size_t i = 0; i < sizeof(FORMAT_DEFS) / sizeof(FORMAT_DEFS[0]); i++) {
                     if (strcasecmp(optarg, FORMAT_DEFS[i]) == 0) {
@@ -107,28 +112,40 @@ int main(int argc, char *argv[]) {
                 }
 
                 if (!is_valid_optarg) {
-                    print_optarg_error(optarg);
+                    print_optarg_error(wcoptarg);
                     exit(EXIT_FAILURE);
                 }
+
+                free(wcoptarg);
                 break;
             }
             case 'd':
-                raw_delimiters = optarg;
+                wcoptarg = calloc(strlen(optarg), sizeof(wchar_t));
+                mbstowcs(wcoptarg, optarg, strlen(optarg));
+
+                raw_delimiters = wcoptarg;
                 opt_flags._field |= 1 << 6;
+
+                free(wcoptarg);
                 break;
             case 't':
+                wcoptarg = calloc(strlen(optarg), sizeof(wchar_t));
+                mbstowcs(wcoptarg, optarg, strlen(optarg));
+
                 // optarg can have at most 2 characters: one for the opening qualifier and one for the closing qualifier
-                if (strlen(optarg) > 2) {
-                    print_text_qualifer_optarg_error(optarg);
+                if (wcslen(wcoptarg) > 2) {
+                    print_text_qualifer_optarg_error(wcoptarg);
                     exit(EXIT_FAILURE);
                 }
-                text_qualifier = optarg;
+                text_qualifier = wcoptarg;
 
                 // If user input only 1 character, assume the opening and closing qualifier are the same character
-                if (strlen(text_qualifier) == 1) {
-                    strncat(text_qualifier, text_qualifier, 1);
+                if (wcslen(text_qualifier) == 1) {
+                    wcsncpy(text_qualifier, text_qualifier, 1);
                 }
                 opt_flags._field |= 1 << 5;
+
+                free(wcoptarg);
                 break;
             case 'H':
                 opt_flags._field |= 1 << 4;
@@ -172,16 +189,16 @@ int main(int argc, char *argv[]) {
     /*
      * Delimiter processor
      */
-    char *delimiters = calloc(strlen(raw_delimiters) + 1, sizeof(char));
-    for (size_t i = 0; i < strlen(raw_delimiters); i++) delimiters[i] = '\0';
-    delimiter_optarg_nparse(raw_delimiters, delimiters, strlen(raw_delimiters));
+    wchar_t *delimiters = calloc(wcslen(raw_delimiters) + 1, sizeof(wchar_t));
+    for (size_t i = 0; i < wcslen(raw_delimiters); i++) delimiters[i] = '\0';
+    delimiter_optarg_nparse(raw_delimiters, delimiters, wcslen(raw_delimiters));
 
     // Guard clause for opening text-qualifier collision with delimiters
-    if (ischrin(text_qualifier[0], delimiters, strlen(delimiters))) {
+    if (wcischrin(text_qualifier[0], delimiters, wcslen(delimiters))) {
         print_text_qualifer_collision(text_qualifier[0]);
 
         // Guard clause for closing text-qualifier collision with delimiters
-        if (ischrin(text_qualifier[1], delimiters, strlen(delimiters))) {
+        if (wcischrin(text_qualifier[1], delimiters, wcslen(delimiters))) {
             print_text_qualifer_collision(text_qualifier[1]);
             exit(EXIT_FAILURE);
         }
@@ -193,7 +210,7 @@ int main(int argc, char *argv[]) {
     /*
      * Main dsv processor
      */
-    char *line = NULL;
+    wchar_t *line = NULL;
     size_t buffer_len = 0;
     ssize_t line_len;
     size_t line_count = 0;

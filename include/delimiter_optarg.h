@@ -8,6 +8,6 @@
 #define ESC_BKSLASH '\\'
 #define ESC_TAB 't'
 
-void delimiter_optarg_nparse(const char *str, char *buffer, size_t n);
+void delimiter_optarg_nparse(const wchar_t *str, wchar_t *buffer, size_t n);
 
 #endif //DSVCOL_DELIMITER_OPTARG_H

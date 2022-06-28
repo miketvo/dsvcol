@@ -10,7 +10,7 @@
 
 /***
  * <p><strong>getline()</strong> was originally GNU extensions. It was standardized in POSIX.1-2008.
- * This is a portable implementation written specifically for dsvcol.</p>
+ * This is a portable implementation written specifically for dsvcol, with wide character support.</p>
  *
  *
  * <h1>POSIX Specifications</h1>
@@ -70,6 +70,6 @@
  * end-of-file condition).  In the event of a failure, <i>errno</i> is set
  * to indicate the error.</p>
  */
-ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+ssize_t getline(wchar_t **lineptr, size_t *n, FILE *stream);
 
 #endif //DSVCOL_GETLINE_H

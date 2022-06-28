@@ -2,6 +2,7 @@
 // Created by miketvo on 5/23/2022.
 //
 #include <stdio.h>
+#include <wchar.h>
 #include "../include/glob.h"
 #include "../include/util.h"
 
@@ -18,16 +19,16 @@ void print_bad_usage() {
     fprintf(stderr, "%s: bad usage\nTry '%s -h' or '%s --help' for more information.\n", APP_NAME, APP_NAME, APP_NAME);
 }
 
-void print_optarg_error(const char *optarg) {
-    fprintf(stderr, "%s: unknown argument '%s'\n", APP_NAME, optarg);
+void print_optarg_error(const wchar_t *optarg) {
+    fwprintf(stderr, L"%s: unknown argument '%s'\n", W_APP_NAME, optarg);
 }
 
-void print_text_qualifer_optarg_error(const char *tq_optarg) {
-    fprintf(stderr, "%s: too many text qualifiers: '%s'\n", APP_NAME, tq_optarg);
+void print_text_qualifer_optarg_error(const wchar_t *tq_optarg) {
+    fwprintf(stderr, L"%s: too many text qualifiers: '%s'\n", W_APP_NAME, tq_optarg);
 }
 
-void print_text_qualifer_collision(char tq) {
-    fprintf(stderr, "%s: text qualifier collision with delimiter: %c\n", APP_NAME, tq);
+void print_text_qualifer_collision(wchar_t tq) {
+    fwprintf(stderr, L"%s: text qualifier collision with delimiter: %c\n", W_APP_NAME, tq);
 }
 
 void print_file_not_found(const char *filename, const char *message) {
@@ -65,6 +66,13 @@ void print_dsverr(enum dsverr errcode, size_t rowno) {
 
 
 bool ischrin(const char el, const char *array, size_t nel) {
+    for (size_t i = 0; i < nel; i++) {
+        if (el == array[i]) return true;
+    }
+    return false;
+}
+
+bool wcischrin(wchar_t el, const wchar_t *array, size_t nel) {
     for (size_t i = 0; i < nel; i++) {
         if (el == array[i]) return true;
     }

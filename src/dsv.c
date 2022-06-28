@@ -21,19 +21,19 @@
 
 /* Private functions and data structures */
 struct token {
-    const char *begin;
-    const char *end;
+    const wchar_t *begin;
+    const wchar_t *end;
 };
 
-struct token tokenize(const char *str, size_t str_size, const char *delimiters, const char *qualifiers, bool greedy) {
+struct token tokenize(const wchar_t *str, size_t str_size, const wchar_t *delimiters, const wchar_t *qualifiers, bool greedy) {
     struct token result = {str, str};
     if (greedy) {
-        while (ischrin(*result.begin, delimiters, strlen(delimiters)))
+        while (wcischrin(*result.begin, delimiters, wcslen(delimiters)))
             result.begin++;
         result.end = result.begin;
     }
 
-    while (!ischrin(*result.end, delimiters, strlen(delimiters)) && *result.end != '\n' && result.end - str < str_size) {
+    while (!wcischrin(*result.end, delimiters, wcslen(delimiters)) && *result.end != '\n' && result.end - str < str_size) {
         if (*result.end == qualifiers[0]) {
             result.end++;
             while (*result.end != qualifiers[1] && *result.end != '\n' && result.end - str < str_size)
@@ -47,7 +47,7 @@ struct token tokenize(const char *str, size_t str_size, const char *delimiters, 
 }
 
 
-size_t count_cols(const char *line, size_t line_size, const char *delimiters, const char *qualifiers, bool greedy) {
+size_t count_cols(const wchar_t *line, size_t line_size, const wchar_t *delimiters, const wchar_t *qualifiers, bool greedy) {
     size_t count = 0;
     struct token current_token = {line, line };
 
@@ -63,34 +63,34 @@ enum alignment {
     LEFT, RIGHT
 };
 
-void print_col(const char *token, size_t col_width, enum alignment col_align) {
+void print_col(const wchar_t *token, size_t col_width, enum alignment col_align) {
     const size_t COL_WIDTH_DIGIT_LIMIT = 100;
-    char col_width_str[COL_WIDTH_DIGIT_LIMIT];
-    char *format_str;
+    wchar_t col_width_str[COL_WIDTH_DIGIT_LIMIT];
+    wchar_t *format_str;
     switch (col_align) {
         case RIGHT: {
-            snprintf(col_width_str, COL_WIDTH_DIGIT_LIMIT, "%llu", (unsigned long long) col_width - 1);
-            format_str = calloc(strlen(col_width_str) * 2 + 5, sizeof(char));
-            strcat(format_str, "%");
-            strcat(format_str, col_width_str);
-            strcat(format_str, ".");
-            strcat(format_str, col_width_str);
-            strcat(format_str, "s ");
+            swprintf(col_width_str, COL_WIDTH_DIGIT_LIMIT, L"%llu", (unsigned long long) col_width - 1);
+            format_str = calloc(wcslen(col_width_str) * 2 + 5, sizeof(wchar_t));
+            wcscat(format_str, L"%");
+            wcscat(format_str, col_width_str);
+            wcscat(format_str, L".");
+            wcscat(format_str, col_width_str);
+            wcscat(format_str, L"s ");
             break;
         }
         case LEFT:
         default: {
-            snprintf(col_width_str, COL_WIDTH_DIGIT_LIMIT, "%llu", (unsigned long long) col_width - 1);
-            format_str = calloc(strlen(col_width_str) * 2 + 6, sizeof(char));
-            strcat(format_str, "%-");
-            strcat(format_str, col_width_str);
-            strcat(format_str, ".");
-            strcat(format_str, col_width_str);
-            strcat(format_str, "s ");
+            swprintf(col_width_str, COL_WIDTH_DIGIT_LIMIT, L"%llu", (unsigned long long) col_width - 1);
+            format_str = calloc(wcslen(col_width_str) * 2 + 6, sizeof(wchar_t));
+            wcscat(format_str, L"%-");
+            wcscat(format_str, col_width_str);
+            wcscat(format_str, L".");
+            wcscat(format_str, col_width_str);
+            wcscat(format_str, L"s ");
             break;
         }
     }
-    printf(format_str, token);
+    wprintf(format_str, token);
     free(format_str);
 }
 /* End of Private functions and data structures */
@@ -98,8 +98,8 @@ void print_col(const char *token, size_t col_width, enum alignment col_align) {
 
 /* Public function */
 enum dsverr dsv_printrow(
-        const char *line, size_t line_size,
-        const char *w_config, const char *delimiters, const char *qualifiers, bool wrap, bool greedy
+        const wchar_t *line, size_t line_size,
+        const char *w_config, const wchar_t *delimiters, const wchar_t *qualifiers, bool wrap, bool greedy
 ) {
     // Get terminal width (platform independent)
     static size_t term_w = 0;
@@ -124,7 +124,7 @@ enum dsverr dsv_printrow(
 
     size_t curr_cols = 0;
     struct token current_token = { line, line };
-    char *current_token_str;
+    wchar_t *current_token_str;
 
     while (current_token.end - line < line_size) {
         if (curr_cols > cols) {
@@ -133,8 +133,8 @@ enum dsverr dsv_printrow(
         }
 
         current_token = tokenize(current_token.end, line_size - (current_token.end - line), delimiters, qualifiers, greedy);
-        current_token_str = calloc(current_token.end - current_token.begin + 2, sizeof(char));
-        strncpy(current_token_str, current_token.begin, current_token.end - current_token.begin - 1);
+        current_token_str = calloc(current_token.end - current_token.begin + 2, sizeof(wchar_t));
+        wcsncpy(current_token_str, current_token.begin, current_token.end - current_token.begin - 1);
         print_col(current_token_str, term_w / cols, LEFT);
         free(current_token_str);
 

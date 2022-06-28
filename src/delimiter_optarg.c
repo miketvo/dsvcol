@@ -9,15 +9,15 @@
 #include "../include/delimiter_optarg.h"
 
 
-void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
-    const char *c = str;
+void delimiter_optarg_nparse(const wchar_t *str, wchar_t *buffer, size_t n) {
+    const wchar_t *c = str;
     size_t i = 0;
     while (*c && i < n) {
         switch (*c) {
             case ESC_BKSLASH:
                 switch (*(c + 1)) {
                     case ESC_TAB:
-                        if (!ischrin('\t', buffer, i)) {
+                        if (!wcischrin('\t', buffer, i)) {
                             buffer[i] = '\t';
                             i++;
                         }
@@ -25,7 +25,7 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
                         n--;
                         break;
                     case ESC_BKSLASH:
-                        if (!ischrin('\\', buffer, i)) {
+                        if (!wcischrin('\\', buffer, i)) {
                             buffer[i] = '\\';
                             i++;
                         }
@@ -38,7 +38,7 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
                 }
                 break;
             default:
-                if (!ischrin(*c, buffer, i)) {
+                if (!wcischrin(*c, buffer, i)) {
                     buffer[i] = *c;
                     i++;
                 }
@@ -46,4 +46,4 @@ void delimiter_optarg_nparse(const char *str, char *buffer, size_t n) {
         }
         c++;
     }
-};
+}
