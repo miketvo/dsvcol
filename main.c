@@ -13,6 +13,7 @@
 const struct option LONG_OPTS[] = {
         {"help",           no_argument,       NULL, 'h'},
         {"version",        no_argument,       NULL, 'v'},
+        {"locale",         required_argument, NULL, 'l'},
         {"format",         required_argument, NULL, 'f'},
         {"delimiters",     required_argument, NULL, 'd'},
         {"text-qualifier", required_argument, NULL, 't'},
@@ -86,7 +87,7 @@ int main(int argc, char *argv[]) {
     const char *w_config = "auto";  // Default to left aligned columns of equal widths
     while (1) {
         int longopt_index = 0;
-        opt = getopt_long(argc, argv, "hvf:d:t:Hw:Wgs", LONG_OPTS, &longopt_index);
+        opt = getopt_long(argc, argv, "hvlf:d:t:Hw:Wgs", LONG_OPTS, &longopt_index);
         if (opt == -1) break;
 
         switch (opt) {
@@ -96,6 +97,9 @@ int main(int argc, char *argv[]) {
             case 'v':
                 print_version();
                 exit(EXIT_SUCCESS);
+            case 'l':
+                setlocale(LC_ALL, optarg);
+                break;
             case 'f': {
                 bool is_valid_optarg = false;
                 for (size_t i = 0; i < sizeof(FORMAT_DEFS) / sizeof(FORMAT_DEFS[0]); i++) {
