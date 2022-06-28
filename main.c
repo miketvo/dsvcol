@@ -1,9 +1,9 @@
+#include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>
 #include <string.h>
 #include <stdbool.h>
-#include <errno.h>
 #include "include/util.h"
 #include "include/getline.h"
 #include "include/dsv.h"
@@ -206,7 +206,7 @@ int main(int argc, char *argv[]) {
                     line, line_len,
                     w_config, delimiters, text_qualifier,
                     is_wrap(opt_flags), is_greedy_mode(opt_flags)
-            );  // TODO: Implement support for wide string
+            );  // TODO: Implement support for wide string / multi-byte characters
             if (is_strict_mode(opt_flags) && dsverrcode != DSV_NOERR) {
                 print_dsverr(dsverrcode, line_count);
                 free(line);
@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) {
                         line, line_len,
                         w_config, delimiters, text_qualifier,
                         is_wrap(opt_flags), is_greedy_mode(opt_flags)
-                );  // TODO: Implement support for wide string
+                );  // TODO: Implement support for wide string / multi-byte character
                 if (is_strict_mode(opt_flags) && dsverrcode != DSV_NOERR) {
                     print_dsverr(dsverrcode, line_count);
                     free(line);
